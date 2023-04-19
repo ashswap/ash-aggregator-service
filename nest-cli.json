@@ -8,6 +8,10 @@
         "outDir": "./dist/config"
       },
       {
+        "include": "../pool_config/pool.yaml",
+        "outDir": "./dist/pool_config"
+      },
+      {
         "include": "../docs/swagger.md",
         "outDir": "./dist/docs"
       },

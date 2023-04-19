@@ -21,12 +21,14 @@ export class PoolDataCron {
     await Locker.lock(
       'Fetching pool data',
       async () => {
-        const [xExchangePools] = await Promise.all([
+        const [xExchangePools, ashswapV1Pools] = await Promise.all([
           this.modelService.loadXExchangePoolConfig(),
+          this.modelService.loadAshswapV1PoolConfig(),
         ]);
         
         let result = [
-          ...xExchangePools
+          ...xExchangePools,
+          ...ashswapV1Pools,
         ]
 
         this.cacheService.setCache(
