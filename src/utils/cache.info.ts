@@ -165,41 +165,10 @@ export class CacheInfo {
     };
   }
 
-  static Healthcheck(deployment: string): CacheInfo {
+  static PoolData(): CacheInfo {
     return {
-      key: `healthcheck:${deployment}`,
+      key: `aggregator:pool`,
       ttl: Constants.oneMinute(),
-    };
-  }
-
-  static HealthCheckNode(): CacheInfo {
-    return {
-      key: `healthcheck:node`,
-      ttl: Constants.oneMinute(),
-    };
-  }
-
-  static HealthcheckElrondGatewayShard(
-    deployment: number,
-    shard: number,
-  ): CacheInfo {
-    return {
-      key: `healthcheck:elrond-gateway:${deployment}:${shard}`,
-      ttl: 30 * Constants.oneSecond(),
-    };
-  }
-
-  static HealthcheckElrondApi(deployment: number): CacheInfo {
-    return {
-      key: `healthcheck:elrond-api:${deployment}`,
-      ttl: 30 * Constants.oneSecond(),
-    };
-  }
-
-  static HealthcheckPool(): CacheInfo {
-    return {
-      key: `healthcheck:pool`,
-      ttl: 30 * Constants.oneSecond(),
     };
   }
 }

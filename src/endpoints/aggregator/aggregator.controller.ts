@@ -7,30 +7,46 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
-import { AggregatorService } from './aggregator.service';
+import { AggregatorProvider } from 'src/common/aggregator/aggregator.provider';
+import { SubgraphPoolBase, SwapTypes } from '@trancport/aggregator';
+import { CachingService } from 'src/common/caching/caching.service';
+import { CacheInfo } from 'src/utils/cache.info';
 
 @Controller()
 export class AggregatorController {
-  constructor(private readonly healthCheckService: AggregatorService) {}
+  constructor(
+    private readonly aggregatorProvider: AggregatorProvider,
+    private readonly cachingService: CachingService,
+  ) {}
 
-  @Get('/healthcheck')
+  @Get('/aggregate')
   @ApiOperation({
-    summary: 'Health check',
-    description: "Returns 'hello', used for performing health checks",
+    summary: 'Aggregate',
+    description: "Returns paths",
   })
-  async getHealthCheck(
-    @Query('deployment') deployment: string,
+  async aggregate(
+    @Query('from') sourceToken: string,
+    @Query('to') destToken: string,
+    @Query('amount') amount: number,
     @Res() response: Response,
   ) {
-    if (!deployment) {
-      return response.status(HttpStatus.OK).json();
+    if (!sourceToken || !destToken || !amount) {
+      return response.status(HttpStatus.BAD_REQUEST).json();
     }
 
-    let statusCode = await this.healthCheckService.getHealthCache(deployment);
-    if (!statusCode) {
-      statusCode = HttpStatus.NOT_FOUND;
+    const dataPool = await this.cachingService.getCache<SubgraphPoolBase[]>(CacheInfo.PoolData().key);
+    if (!dataPool){
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json();
     }
 
-    return response.status(statusCode).json();
+    const sor = await this.aggregatorProvider.getSOR();
+    sor.setPools(dataPool);
+    // const swapInfo = await sor.getSwaps(
+    //   sourceToken,
+    //   destToken,
+    //   SwapTypes.SwapExactIn,
+    //   amount,
+    // )
+    return response.status(HttpStatus.OK).json(sor.getPools());
   }
 }

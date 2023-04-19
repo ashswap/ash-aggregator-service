@@ -4,7 +4,7 @@ import * as bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ApiConfigService } from './common/api-config/api.config.service';
-// import { CronModule } from './crons/cache.warmer.module';
+import { CronModule } from './crons/cron.module';
 import { PublicAppModule } from './public.app.module';
 
 async function bootstrap() {
@@ -27,8 +27,8 @@ async function bootstrap() {
   }
 
   if (apiConfigService.getIsCronFeatureActive()) {
-    // const cacheWarmerApp = await NestFactory.create(CronModule);
-    // await cacheWarmerApp.listen(apiConfigService.getMonitorFeaturePort());
+    const cacheWarmerApp = await NestFactory.create(CronModule);
+    await cacheWarmerApp.listen(apiConfigService.getCronFeaturePort());
   }
 
   const logger = new Logger('Bootstrapper');

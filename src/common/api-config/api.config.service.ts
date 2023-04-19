@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Storage } from 'src/utils/store';
 
 @Injectable()
 export class ApiConfigService {
@@ -164,16 +163,6 @@ export class ApiConfigService {
     }
 
     return gatewayUrls;
-  }
-
-  getGatewayUrl(): string {
-    const urls = this.getGatewayUrls();
-    const url =
-      Storage.getGatewayUrl() || urls[Math.floor(Math.random() * urls.length)];
-    if (!url) {
-      throw new Error('No gateway url present');
-    }
-    return url;
   }
 
   getRedisUrl(): string {
@@ -440,5 +429,13 @@ export class ApiConfigService {
 
   getSentryDsn() {
     return this.configService.get<string>('sentryDsn');
+  }
+
+  getXExchangeServiceUrl() : string {
+    return this.configService.get<string>('aggregate_pool.xexchange') ?? "https://graph.xexchange.com/graphql";
+  }
+
+  getAshswapServiceUrl() : string {
+    return this.configService.get<string>('aggregate_pool.ashswap') ?? "https://api-v2.ashswap.io/graphql";
   }
 }

@@ -15,6 +15,9 @@ features:
     port: ${MONITOR_PORT}
   keepAliveAgent:
     enabled: true
+aggregate_pool:
+  xexchange: ${XEXCHANGE_SERVICE_URL}
+  ashswap: ${ASHSWAP_SERVICE_URL}
 security:
   jwtSecret: ${JWT_SECRET}
   admins:
