@@ -1,0 +1,40 @@
+include:
+  - project: 'trancport/blockchain/util/gitlab-ci-template'
+    ref: main
+    file: '/base.yml'
+
+stages:
+  - build
+
+build-alpha:
+  extends: .build
+  variables:
+    ENV: devnet.alpha
+    IMAGE_TAG: $CI_COMMIT_TAG
+    IMAGE_LATEST_TAG: latest
+  only:
+    - /^.*-alpha$/
+  except:
+    - branches
+
+build-beta:
+  extends: .build
+  variables:
+    ENV: devnet.beta
+    IMAGE_TAG: $CI_COMMIT_TAG
+    IMAGE_LATEST_TAG: latest
+  only:
+    - /^.*-beta$/
+  except:
+    - branches
+
+build-prod:
+  extends: .build
+  variables:
+    ENV: mainnet
+    IMAGE_TAG: $CI_COMMIT_TAG
+    IMAGE_LATEST_TAG: latest
+  only:
+    - /^.*-prod$/
+  except:
+    - branches

@@ -1,0 +1,20 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "assets": [
+      {
+        "include": "../config/config.yaml",
+        "outDir": "./dist/config"
+      },
+      {
+        "include": "../docs/swagger.md",
+        "outDir": "./dist/docs"
+      },
+      {
+        "include": "./graphql/**/*.graphql",
+        "outDir": "./dist/src"
+      }
+    ]
+  }
+}
