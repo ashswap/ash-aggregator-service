@@ -37,6 +37,10 @@
     "typeRoots": [
       "src/@types",
       "node_modules/@types"
-    ]
-  }
+    ],
+  }, 
+  "include": [
+      "src",
+      "type-env.d.ts"
+  ],
 }

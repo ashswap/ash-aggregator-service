@@ -25,17 +25,16 @@ export class PoolDataCron {
           this.modelService.loadXExchangePoolConfig(),
           this.modelService.loadAshswapV1PoolConfig(),
         ]);
-        
         let result = [
           ...xExchangePools,
           ...ashswapV1Pools,
         ]
-
         this.cacheService.setCache(
           CacheInfo.PoolData().key,
           result,
           CacheInfo.PoolData().ttl,
         );
+        this.logger.log("Load data successfully");
       },
       true,
     );

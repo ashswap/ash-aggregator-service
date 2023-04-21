@@ -37,11 +37,6 @@
     "copy-custom-config": "cp ./config/config.custom.yaml ./config/config.yaml"
   },
   "dependencies": {
-    "@ethersproject/abi": "^5.4.1",
-    "@ethersproject/address": "^5.4.0",
-    "@ethersproject/constants": "^5.4.0",
-    "@ethersproject/contracts": "^5.4.1",
-    "@ethersproject/providers": "^5.4.4",
     "@golevelup/nestjs-rabbitmq": "^3.5.0",
     "@multiversx/sdk-core": "^11.4.0",
     "@multiversx/sdk-nestjs": "^0.4.8",
@@ -63,7 +58,7 @@
     "@nestjs/typeorm": "^9.0.1",
     "@nestjs/websockets": "^9.3.9",
     "@sentry/browser": "^7.38.0",
-    "@trancport/aggregator": "^0.0.2",
+    "@trancport/aggregator": "^0.0.5",
     "agentkeepalive": "^4.2.1",
     "bignumber.js": "^9.1.1",
     "body-parser": "^1.20.2",

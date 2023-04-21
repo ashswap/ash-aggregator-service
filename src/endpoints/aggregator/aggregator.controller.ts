@@ -36,17 +36,17 @@ export class AggregatorController {
 
     const dataPool = await this.cachingService.getCache<SubgraphPoolBase[]>(CacheInfo.PoolData().key);
     if (!dataPool){
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json();
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json("Data is not set");
     }
 
     const sor = await this.aggregatorProvider.getSOR();
     sor.setPools(dataPool);
-    // const swapInfo = await sor.getSwaps(
-    //   sourceToken,
-    //   destToken,
-    //   SwapTypes.SwapExactIn,
-    //   amount,
-    // )
-    return response.status(HttpStatus.OK).json(sor.getPools());
+    const swapInfo = await sor.getSwaps(
+      sourceToken,
+      destToken,
+      SwapTypes.SwapExactIn,
+      amount,
+    )
+    return response.status(HttpStatus.OK).json(swapInfo);
   }
 }

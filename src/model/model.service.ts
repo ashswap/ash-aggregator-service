@@ -4,7 +4,8 @@ import { GraphQlService } from "src/common/graphql/graphql.service";
 import { SubgraphPoolBase } from "@trancport/aggregator"
 import { gql } from "graphql-request";
 import { POOL_CONFIGS, PoolTypeConfig } from '../../pool_config/configuration';
-import { SubgraphToken } from '../../../ash-aggregator-sdk/dist/src/types';
+import { SubgraphToken } from '@trancport/aggregator';
+import { BigNumber, formatFixed } from 'src/utils/bignumber';
 
 @Injectable()
 export class ModelService {
@@ -55,31 +56,27 @@ export class ModelService {
                     swapEnabled: true,
                     tokens: [
                         {
-                            address: pool.firstToken.identifier,
-                            balance: pool.info.reserves0,
+                            address: (pool.firstToken.identifier as string).toLowerCase(),
+                            balance: formatFixed(BigNumber.from(pool.info.reserves0), pool.firstToken.decimals as number),
                             decimals: pool.firstToken.decimals,
-                            weight: null,
                             priceRate: "1"
                         },
                         {
-                            address: pool.secondToken.identifier,
-                            balance: pool.info.reserves1,
+                            address: (pool.secondToken.identifier as string).toLowerCase(),
+                            balance: formatFixed(BigNumber.from(pool.info.reserves1), pool.secondToken.decimals as number),
                             decimals: pool.secondToken.decimals,
-                            weight: null,
                             priceRate: "1"
                         }
                     ],
                     tokensList: [
-                        pool.firstToken.identifier,
-                        pool.secondToken.identifier,
+                        (pool.firstToken.identifier as string).toLowerCase(),
+                        (pool.secondToken.identifier as string).toLowerCase(),
                     ],
-                    totalShares: "10",
-                    poolType: "ProductConst",
+                    poolType: "ProductConstant",
                 };
                 result.push(data);
             }
         }
-
         return result;
     }
 
@@ -104,7 +101,7 @@ export class ModelService {
             }`,
             {}
         );
-        
+
         let addressPoolResponse : Map<string, any> = new Map<string, any>();
         for (const poolResponse of response.pools){
             addressPoolResponse.set(poolResponse.address, poolResponse);
@@ -117,14 +114,13 @@ export class ModelService {
                 let tokens: SubgraphToken[] = [];
                 pool.tokens.forEach((token: { id: string; }, index: number) => {
                     let data: SubgraphToken = {
-                        address: token.id,
-                        balance: pool.reserves[index],
+                        address: (token.id  as string).toLowerCase(),
+                        balance: formatFixed(BigNumber.from(pool.reserves[index]), poolConfig.tokens[index].decimal as number),
                         decimals: poolConfig.tokens[index].decimal,
-                        weight: null,
                         priceRate: "1",
                     };
                     tokens.push(data);
-                    tokensList.push(token.id);
+                    tokensList.push((token.id as string).toLowerCase());
                 });
                 let data: SubgraphPoolBase = {
                     id: pool.address,
@@ -133,13 +129,12 @@ export class ModelService {
                     swapEnabled: true,
                     tokens: tokens,
                     tokensList: tokensList,
-                    totalShares: "10",
                     poolType: "Stable",
+                    amp: pool.ampFactor
                 };
                 result.push(data);
             }
         }
-
         return result;
     }
 }
