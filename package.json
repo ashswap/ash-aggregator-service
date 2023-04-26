@@ -10,6 +10,7 @@
     "build": "nest build",
     "prepare": "husky install",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "nest start",
     "start:devnet": "npm run copy-devnet-beta-config & nest start",
     "start:devnet:watch": "npm run copy-devnet-beta-config & nest start --watch",
     "start:devnet:debug": "npm run copy-devnet-beta-config & nest start --watch --debug",

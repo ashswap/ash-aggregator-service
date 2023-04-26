@@ -5,6 +5,7 @@ import { Logger } from '@nestjs/common';
 import { ModelService } from 'src/model/model.service';
 import { CachingService } from 'src/common/caching/caching.service';
 import { CacheInfo } from 'src/utils/cache.info';
+import { SubgraphToken } from '@trancport/aggregator';
 
 @Injectable()
 export class PoolDataCron {
@@ -28,11 +29,24 @@ export class PoolDataCron {
         let result = [
           ...xExchangePools,
           ...ashswapV1Pools,
-        ]
+        ];
+        const tokens = new Map<string, SubgraphToken>();;
+        result.forEach((pool) => {
+          pool.tokens.forEach((token) => {
+            tokens.set(token.address, token);
+          })
+        });
+
         this.cacheService.setCache(
-          CacheInfo.PoolData().key,
+          CacheInfo.AggregatorTokenData().key,
+          Array.from(tokens.values()),
+          CacheInfo.AggregatorTokenData().ttl,
+        );
+
+        this.cacheService.setCache(
+          CacheInfo.AggregatorPoolData().key,
           result,
-          CacheInfo.PoolData().ttl,
+          CacheInfo.AggregatorPoolData().ttl,
         );
         this.logger.log("Load data successfully");
       },

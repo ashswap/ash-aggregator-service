@@ -165,9 +165,16 @@ export class CacheInfo {
     };
   }
 
-  static PoolData(): CacheInfo {
+  static AggregatorPoolData(): CacheInfo {
     return {
       key: `aggregator:pool`,
+      ttl: Constants.oneMinute(),
+    };
+  }
+
+  static AggregatorTokenData(): CacheInfo {
+    return {
+      key: `aggregator:token`,
       ttl: Constants.oneMinute(),
     };
   }

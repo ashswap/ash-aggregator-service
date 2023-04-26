@@ -29,4 +29,7 @@ export interface Route {
 
 export interface AggregatorResponseDto extends SwapInfo {
     routes?: Route[],
+    effectivePrice?: number,
+    effectivePriceReversed?: number,
+    priceImpact?: number,
 }
