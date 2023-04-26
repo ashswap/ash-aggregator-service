@@ -11,8 +11,9 @@ import { AggregatorProvider } from 'src/common/aggregator/aggregator.provider';
 import { SubgraphPoolBase, SubgraphToken, SwapTypes, bnum } from '@trancport/aggregator';
 import { CachingService } from 'src/common/caching/caching.service';
 import { CacheInfo } from 'src/utils/cache.info';
-import { AggregatorResponseDto, Hop, Route } from './aggregator.dto';
+import { AggregatorResponseDto, Hop, Route, TokenId } from './aggregator.dto';
 import { formatFixed } from 'src/utils/bignumber';
+import { POOL_CONFIGS } from 'pool_config/configuration';
 
 @Controller()
 export class AggregatorController {
@@ -75,6 +76,7 @@ export class AggregatorController {
         swap.returnAmount ?? 0,
         this.findTokenDecimal(dataToken, swapInfo.tokenOut),
       );
+      const poolConfig = POOL_CONFIGS.find((poolConfig) => poolConfig.address == swap.poolId);
 
       if (new_route) {
         if (index != 0) {
@@ -84,6 +86,15 @@ export class AggregatorController {
         }
         hop = {
           poolId: swap.poolId,
+          pool: {
+            allTokens: poolConfig?.tokens.map<TokenId>((tokenConfig) => {
+              return {
+                address: tokenConfig.id,
+                decimal: tokenConfig.decimal,
+              };
+            }),
+            type: poolConfig?.type,
+          },
           tokenInAmount: swapAmount,
           tokenOutAmount: returnAmount,
           tokenIn: swap.assetIn,
@@ -100,6 +111,15 @@ export class AggregatorController {
       } else {
         hop = {
           poolId: swap.poolId,
+          pool: {
+            allTokens: poolConfig?.tokens.map<TokenId>((tokenConfig) => {
+              return {
+                address: tokenConfig.id,
+                decimal: tokenConfig.decimal,
+              };
+            }),
+            type: poolConfig?.type,
+          },
           tokenInAmount: route.hops.at(-1)?.tokenOutAmount,
           tokenOutAmount: returnAmount,
           tokenIn: swap.assetIn,
