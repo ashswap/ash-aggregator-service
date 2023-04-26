@@ -11,6 +11,7 @@ import { AggregatorProvider } from 'src/common/aggregator/aggregator.provider';
 import { SubgraphPoolBase, SwapTypes } from '@trancport/aggregator';
 import { CachingService } from 'src/common/caching/caching.service';
 import { CacheInfo } from 'src/utils/cache.info';
+import { AggregatorResponseDto, Hop, Route } from './aggregator.dto';
 
 @Controller()
 export class AggregatorController {
@@ -41,12 +42,59 @@ export class AggregatorController {
 
     const sor = await this.aggregatorProvider.getSOR();
     sor.setPools(dataPool);
-    const swapInfo = await sor.getSwaps(
+    const swapInfo: AggregatorResponseDto = await sor.getSwaps(
       sourceToken,
       destToken,
       SwapTypes.SwapExactIn,
       amount,
-    )
+    );
+    // build routes
+    const routes : Route[] = [];
+    let route : Route = {
+      hops: [{poolId: ""}],
+      share: 0,
+    };
+    let hop: Hop;
+    for (const [index, swap] of swapInfo.swaps.entries()) {
+      const new_route = swap.amount == "0" ? false : true;
+      if (new_route) {
+        if (index != 0) {
+          route.tokenOut = swap.assetOut;
+          route.tokenOutAmount = swap.returnAmount;
+          routes.push(route);
+        }
+        hop = {
+          poolId: swap.poolId,
+          tokenInAmount: swap.amount,
+          tokenOutAmount: swap.returnAmount,
+          tokenIn: swap.assetIn,
+          tokenOut: swap.assetOut,
+        };
+        route = {
+          hops: [hop],
+          share: 0,
+          tokenIn: swap.assetIn,
+          tokenInAmount: swap.amount,
+          tokenOut: "", // setup when finish
+          tokenOutAmount: "",
+        };
+      } else {
+        hop = {
+          poolId: swap.poolId,
+          tokenInAmount: route.hops.at(-1)?.tokenOutAmount,
+          tokenOutAmount: swap.returnAmount,
+          tokenIn: swap.assetIn,
+          tokenOut: swap.assetOut,
+        };
+        route.hops.push(hop);
+      }
+      if (index == swapInfo.swaps.length - 1) {
+        route.tokenOut = swap.assetOut;
+        route.tokenOutAmount = swap.returnAmount;
+        routes.push(route);
+      }
+    }
+    swapInfo.routes = routes;
     return response.status(HttpStatus.OK).json(swapInfo);
   }
 }

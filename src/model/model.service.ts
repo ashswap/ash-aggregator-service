@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ApiConfigService } from "src/common/api-config/api.config.service";
 import { GraphQlService } from "src/common/graphql/graphql.service";
-import { SubgraphPoolBase } from "@trancport/aggregator"
+import { SubgraphPoolBase } from "@trancport/aggregator";
 import { gql } from "graphql-request";
 import { POOL_CONFIGS, PoolTypeConfig } from '../../pool_config/configuration';
 import { SubgraphToken } from '@trancport/aggregator';
@@ -16,7 +16,7 @@ export class ModelService {
     }
 
     async loadXExchangePoolConfig(): Promise<SubgraphPoolBase[]> {
-        let result: SubgraphPoolBase[] = [];
+        const result: SubgraphPoolBase[] = [];
 
         const response = await this.graphQLService.getData(
             this.apiConfigService.getXExchangeServiceUrl(),
@@ -41,7 +41,7 @@ export class ModelService {
             {}
         );
         
-        let addressPoolResponse : Map<string, any> = new Map<string, any>();
+        const addressPoolResponse : Map<string, any> = new Map<string, any>();
         for (const poolResponse of response.pairs){
             addressPoolResponse.set(poolResponse.address, poolResponse);
         }
@@ -49,7 +49,7 @@ export class ModelService {
         for (const poolConfig of POOL_CONFIGS) {
             if (poolConfig.type == PoolTypeConfig.XEXCHANGE) {
                 const pool = addressPoolResponse.get(poolConfig.address);
-                let data: SubgraphPoolBase = {
+                const data: SubgraphPoolBase = {
                     id: pool.address,
                     address: pool.address,
                     swapFee: pool.totalFeePercent,
@@ -59,14 +59,14 @@ export class ModelService {
                             address: (pool.firstToken.identifier as string).toLowerCase(),
                             balance: formatFixed(BigNumber.from(pool.info.reserves0), pool.firstToken.decimals as number),
                             decimals: pool.firstToken.decimals,
-                            priceRate: "1"
+                            priceRate: "1",
                         },
                         {
                             address: (pool.secondToken.identifier as string).toLowerCase(),
                             balance: formatFixed(BigNumber.from(pool.info.reserves1), pool.secondToken.decimals as number),
                             decimals: pool.secondToken.decimals,
-                            priceRate: "1"
-                        }
+                            priceRate: "1",
+                        },
                     ],
                     tokensList: [
                         (pool.firstToken.identifier as string).toLowerCase(),
@@ -81,7 +81,7 @@ export class ModelService {
     }
 
     async loadAshswapV1PoolConfig(): Promise<SubgraphPoolBase[]> {
-        let result: SubgraphPoolBase[] = [];
+        const result: SubgraphPoolBase[] = [];
 
         const response = await this.graphQLService.getData(
             this.apiConfigService.getAshswapServiceUrl(),
@@ -102,7 +102,7 @@ export class ModelService {
             {}
         );
 
-        let addressPoolResponse : Map<string, any> = new Map<string, any>();
+        const addressPoolResponse : Map<string, any> = new Map<string, any>();
         for (const poolResponse of response.pools){
             addressPoolResponse.set(poolResponse.address, poolResponse);
         }
@@ -110,10 +110,10 @@ export class ModelService {
         for (const poolConfig of POOL_CONFIGS) {
             if (poolConfig.type == PoolTypeConfig.ASHSWAP_V1) {
                 const pool = addressPoolResponse.get(poolConfig.address);
-                let tokensList : string[] = [];
-                let tokens: SubgraphToken[] = [];
+                const tokensList : string[] = [];
+                const tokens: SubgraphToken[] = [];
                 pool.tokens.forEach((token: { id: string; }, index: number) => {
-                    let data: SubgraphToken = {
+                    const data: SubgraphToken = {
                         address: (token.id  as string).toLowerCase(),
                         balance: formatFixed(BigNumber.from(pool.reserves[index]), poolConfig.tokens[index].decimal as number),
                         decimals: poolConfig.tokens[index].decimal,
@@ -122,7 +122,7 @@ export class ModelService {
                     tokens.push(data);
                     tokensList.push((token.id as string).toLowerCase());
                 });
-                let data: SubgraphPoolBase = {
+                const data: SubgraphPoolBase = {
                     id: pool.address,
                     address: pool.address,
                     swapFee: ((pool.swapFeePercent as number)/100000).toString(),
@@ -130,7 +130,7 @@ export class ModelService {
                     tokens: tokens,
                     tokensList: tokensList,
                     poolType: "Stable",
-                    amp: pool.ampFactor
+                    amp: pool.ampFactor,
                 };
                 result.push(data);
             }

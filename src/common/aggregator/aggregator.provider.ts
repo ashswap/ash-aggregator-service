@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SOR, SubgraphPoolBase } from '@trancport/aggregator';
+import { SOR } from '@trancport/aggregator';
 
 @Injectable()
 export class AggregatorProvider {
