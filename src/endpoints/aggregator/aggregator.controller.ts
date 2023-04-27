@@ -8,11 +8,11 @@ import {
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { AggregatorProvider } from 'src/common/aggregator/aggregator.provider';
-import { SubgraphPoolBase, SubgraphToken, SwapTypes, bnum } from '@trancport/aggregator';
+import { PoolFilter, SubgraphPoolBase, SubgraphToken, SwapTypes, bnum } from '@trancport/aggregator';
 import { CachingService } from 'src/common/caching/caching.service';
 import { CacheInfo } from 'src/utils/cache.info';
 import { AggregatorResponseDto, Hop, Route, TokenId } from './aggregator.dto';
-import { formatFixed } from 'src/utils/bignumber';
+import { BigNumber, formatFixed } from 'src/utils/bignumber';
 import { POOL_CONFIGS } from 'pool_config/configuration';
 
 @Controller()
@@ -58,6 +58,14 @@ export class AggregatorController {
       destToken,
       SwapTypes.SwapExactIn,
       amount,
+      {
+        gasPrice: BigNumber.from(0),
+        swapGas: BigNumber.from(0),
+        poolTypeFilter: PoolFilter.All,
+        maxPools: 4,
+        timestamp: Math.floor(Date.now() / 1000),
+        forceRefresh: true,
+      }
     );
     // build routes
     const routes : Route[] = [];
