@@ -1,7 +1,7 @@
 version: '3.8'
 services:
-  ashswap-monitor:
-    image: ashswap-monitor
+  ashswap-aggregator-service:
+    image: ashswap-aggregator-service
     ports:
       - 3001:3001
     extra_hosts:

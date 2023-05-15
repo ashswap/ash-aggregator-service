@@ -11,8 +11,8 @@ features:
     enabled: ${API_ENABLED}
     port: ${PUBLIC_API_PORT}
   cron:
-    enabled: ${MONITOR_ENABLED}
-    port: ${MONITOR_PORT}
+    enabled: ${CRON_ENABLED}
+    port: ${CRON_PORT}
   keepAliveAgent:
     enabled: true
 aggregate_pool:
