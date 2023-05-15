@@ -27,6 +27,20 @@ pool:
         decimal: 18
       - id: WEGLD-d7c6bb
         decimal: 18
+  - address: erd1qqqqqqqqqqqqqpgq5400a82at6ttplyrdhyn8kk9lhxaed5d0n4s9s77kz
+    type: xexchange
+    tokens: 
+      - id: HTM-fe1f69
+        decimal: 18
+      - id: WEGLD-d7c6bb
+        decimal: 18
+  - address: erd1qqqqqqqqqqqqqpgq53wlytsnh0g5hauxsx5fyf40eafzz9w00n4sswvfwq
+    type: xexchange
+    tokens: 
+      - id: ASH-4ce444
+        decimal: 18
+      - id: WEGLD-d7c6bb
+        decimal: 18
   - address: erd1qqqqqqqqqqqqqpgq3sfgh89vurcdet6lwl4cysqddeyk0rqh2gesqpkk4e
     type: ashswap-poolv1
     tokens: 

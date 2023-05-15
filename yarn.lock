@@ -677,10 +677,10 @@
   resolved "https://registry.npmjs.org/@sqltools/formatter/-/formatter-1.2.5.tgz"
   integrity sha512-Uy0+khmZqUrUGm5dmMqVlnvufZRSK0FbYzVgp0UMstm+F5+W2/jnEEQyc9vo1ZR/E5ZI/B1WjjoTqBqwJL6Krw==
 
-"@trancport/aggregator@^0.0.9":
-  version "0.0.9"
-  resolved "https://gitlab.com/api/v4/projects/44133673/packages/npm/@trancport/aggregator/-/@trancport/aggregator-0.0.9.tgz#f3d6f75529f744fb697e8d94c08f00c054db6504"
-  integrity sha1-89b3VSn3RPtpfo2UwI8AwFTbZQQ=
+"@trancport/aggregator@^0.0.11":
+  version "0.0.11"
+  resolved "https://gitlab.com/api/v4/projects/44133673/packages/npm/@trancport/aggregator/-/@trancport/aggregator-0.0.11.tgz#e252259becb1dbcb03c2c94ae91cf453c9c7c85f"
+  integrity sha1-4lIlm+yx28sDwslK6Rz0U8nHyF8=
   dependencies:
     isomorphic-fetch "^2.2.1"
 

@@ -1,19 +1,20 @@
 import { Response } from 'express';
-import {
-  Controller,
-  Get,
-  HttpStatus,
-  Query,
-  Res,
-} from '@nestjs/common';
+import { Controller, Get, HttpStatus, Query, Res } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { AggregatorProvider } from 'src/common/aggregator/aggregator.provider';
-import { PoolFilter, SubgraphPoolBase, SubgraphToken, SwapTypes, bnum } from '@trancport/aggregator';
+import {
+  PoolFilter,
+  SubgraphPoolBase,
+  SubgraphToken,
+  SwapTypes,
+  bnum,
+} from '@trancport/aggregator';
 import { CachingService } from 'src/common/caching/caching.service';
 import { CacheInfo } from 'src/utils/cache.info';
 import { AggregatorResponseDto, Hop, Route, TokenId } from './aggregator.dto';
 import { BigNumber, formatFixed } from 'src/utils/bignumber';
 import { POOL_CONFIGS } from 'pool_config/configuration';
+import { formatTokenIdentifier } from 'src/utils/token';
 
 @Controller()
 export class AggregatorController {
@@ -22,14 +23,17 @@ export class AggregatorController {
     private readonly cachingService: CachingService,
   ) {}
 
-  private findTokenDecimal(dataToken: [SubgraphToken], tokenId: string): number {
-    return dataToken.find(token => token.address == tokenId)?.decimals ?? 0;
+  private findTokenDecimal(
+    dataToken: [SubgraphToken],
+    tokenId: string,
+  ): number {
+    return dataToken.find((token) => token.address == tokenId)?.decimals ?? 0;
   }
 
   @Get('/aggregate')
   @ApiOperation({
     summary: 'Aggregate',
-    description: "Returns paths",
+    description: 'Returns paths',
   })
   async aggregate(
     @Query('from') sourceToken: string,
@@ -37,23 +41,31 @@ export class AggregatorController {
     @Query('amount') amount: number,
     @Res() response: Response,
   ) {
-    if (!sourceToken || !destToken || !amount) {
+    if (!sourceToken || !destToken || !amount || sourceToken === destToken) {
       return response.status(HttpStatus.BAD_REQUEST).json();
     }
 
-    const dataPool = await this.cachingService.getCache<SubgraphPoolBase[]>(CacheInfo.AggregatorPoolData().key);
-    if (!dataPool){
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json("Data is not set");
+    const dataPool = await this.cachingService.getCache<SubgraphPoolBase[]>(
+      CacheInfo.AggregatorPoolData().key,
+    );
+    if (!dataPool) {
+      return response
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json('Data is not set');
     }
 
-    const dataToken = await this.cachingService.getCache<[SubgraphToken]>(CacheInfo.AggregatorTokenData().key);
-    if (!dataToken){
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json("Data is not set");
+    const dataToken = await this.cachingService.getCache<[SubgraphToken]>(
+      CacheInfo.AggregatorTokenData().key,
+    );
+    if (!dataToken) {
+      return response
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json('Data is not set');
     }
 
     const sor = await this.aggregatorProvider.getSOR();
     sor.setPools(dataPool);
-    const swapInfo: AggregatorResponseDto = await sor.getSwaps(
+    const swapInfo = await sor.getSwaps(
       sourceToken,
       destToken,
       SwapTypes.SwapExactIn,
@@ -65,91 +77,83 @@ export class AggregatorController {
         maxPools: 4,
         timestamp: Math.floor(Date.now() / 1000),
         forceRefresh: true,
-      }
+      },
     );
     // build routes
-    const routes : Route[] = [];
-    let route : Route = {
-      hops: [{poolId: ""}],
+    const routes: Route[] = [];
+    let route: Route = {
+      hops: [{ poolId: '' }],
       share: 0,
     };
     let hop: Hop;
     for (const [index, swap] of swapInfo.swaps.entries()) {
-      const new_route = swap.amount == "0" ? false : true;
+      const new_route = swap.amount == '0' ? false : true;
       const swapAmount = formatFixed(
         swap.amount,
-        this.findTokenDecimal(dataToken, swapInfo.tokenIn),
+        this.findTokenDecimal(dataToken, swap.assetIn ?? ''),
       );
       const returnAmount = formatFixed(
         swap.returnAmount ?? 0,
-        this.findTokenDecimal(dataToken, swapInfo.tokenOut),
+        this.findTokenDecimal(dataToken, swap.assetOut ?? ''),
       );
-      const poolConfig = POOL_CONFIGS.find((poolConfig) => poolConfig.address == swap.poolId);
+
+      const poolConfig = POOL_CONFIGS.find(
+        (poolConfig) => poolConfig.address == swap.poolId,
+      );
+
+      hop = {
+        poolId: swap.poolId,
+        pool: {
+          allTokens: poolConfig?.tokens.map<TokenId>((tokenConfig) => {
+            return {
+              address: formatTokenIdentifier(tokenConfig.id),
+              decimal: tokenConfig.decimal,
+            };
+          }),
+          type: poolConfig?.type,
+        },
+        tokenInAmount: swapAmount,
+        tokenOutAmount: returnAmount,
+        tokenIn: formatTokenIdentifier(swap.assetIn || ''),
+        tokenOut: formatTokenIdentifier(swap.assetOut || ''),
+      };
 
       if (new_route) {
         if (index != 0) {
-          route.tokenOut = swap.assetOut;
-          route.tokenOutAmount = returnAmount;
+          route.tokenOut = formatTokenIdentifier(
+            route.hops.at(-1)?.tokenOut || '',
+          );
+          route.tokenOutAmount = route.hops.at(-1)?.tokenOutAmount;
           routes.push(route);
         }
-        hop = {
-          poolId: swap.poolId,
-          pool: {
-            allTokens: poolConfig?.tokens.map<TokenId>((tokenConfig) => {
-              return {
-                address: tokenConfig.id,
-                decimal: tokenConfig.decimal,
-              };
-            }),
-            type: poolConfig?.type,
-          },
-          tokenInAmount: swapAmount,
-          tokenOutAmount: returnAmount,
-          tokenIn: swap.assetIn,
-          tokenOut: swap.assetOut,
-        };
         route = {
           hops: [hop],
           share: 0,
-          tokenIn: swap.assetIn,
+          tokenIn: formatTokenIdentifier(swap.assetIn || ''),
           tokenInAmount: swapAmount,
-          tokenOut: "", // setup when finish
-          tokenOutAmount: "",
+          tokenOut: '', // setup when finish
+          tokenOutAmount: '',
         };
       } else {
-        hop = {
-          poolId: swap.poolId,
-          pool: {
-            allTokens: poolConfig?.tokens.map<TokenId>((tokenConfig) => {
-              return {
-                address: tokenConfig.id,
-                decimal: tokenConfig.decimal,
-              };
-            }),
-            type: poolConfig?.type,
-          },
-          tokenInAmount: route.hops.at(-1)?.tokenOutAmount,
-          tokenOutAmount: returnAmount,
-          tokenIn: swap.assetIn,
-          tokenOut: swap.assetOut,
-        };
+        hop.tokenInAmount = route.hops.at(-1)?.tokenOutAmount;
         route.hops.push(hop);
       }
       if (index == swapInfo.swaps.length - 1) {
-        route.tokenOut = swap.assetOut;
-        route.tokenOutAmount = returnAmount;
+        route.tokenOut = formatTokenIdentifier(
+          route.hops.at(-1)?.tokenOut || '',
+        );
+        route.tokenOutAmount = route.hops.at(-1)?.tokenOutAmount;
         routes.push(route);
       }
     }
-    swapInfo.routes = routes;
-    
+
     const swapAmount = formatFixed(
       swapInfo.swapAmount,
       this.findTokenDecimal(dataToken, swapInfo.tokenIn),
     );
     const returnAmount = formatFixed(
-        swapInfo.returnAmount,
-        this.findTokenDecimal(dataToken, swapInfo.tokenOut),
+      swapInfo.returnAmount,
+      this.findTokenDecimal(dataToken, swapInfo.tokenOut),
     );
 
     const effectivePrice = bnum(swapAmount).div(returnAmount);
@@ -158,10 +162,29 @@ export class AggregatorController {
 
     swapInfo.swapAmount = swapAmount;
     swapInfo.returnAmount = returnAmount;
-    swapInfo.effectivePrice = effectivePrice.toNumber();
-    swapInfo.effectivePriceReversed = effectivePriceReversed.toNumber();
-    swapInfo.priceImpact = priceImpact.toNumber();
-
-    return response.status(HttpStatus.OK).json(swapInfo);
+    const agResponse: AggregatorResponseDto = {
+      ...swapInfo,
+      effectivePrice: effectivePrice.toNumber(),
+      effectivePriceReversed: effectivePriceReversed.toNumber(),
+      priceImpact: priceImpact.toNumber(),
+      routes,
+      tokenIn: formatTokenIdentifier(swapInfo.tokenIn),
+      tokenOut: formatTokenIdentifier(swapInfo.tokenOut),
+      swaps: [
+        ...swapInfo.swaps.map((s) => {
+          const exchangeConfig = this.aggregatorProvider.getExchangeConfig(
+            s.poolId,
+            formatTokenIdentifier(s.assetOut || ''),
+          );
+          return {
+            ...s,
+            assetIn: formatTokenIdentifier(s.assetIn || ''),
+            assetOut: formatTokenIdentifier(s.assetOut || ''),
+            ...exchangeConfig,
+          };
+        }),
+      ],
+    };
+    return response.status(HttpStatus.OK).json(agResponse);
   }
 }

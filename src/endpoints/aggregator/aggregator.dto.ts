@@ -1,4 +1,4 @@
-import { SwapInfo } from "@trancport/aggregator";
+import { SwapInfo, SwapV2 } from "@trancport/aggregator";
 
 export interface TokenId {
     address: string,
@@ -33,4 +33,8 @@ export interface AggregatorResponseDto extends SwapInfo {
     effectivePrice?: number,
     effectivePriceReversed?: number,
     priceImpact?: number,
+    swaps: Array<SwapV2 & {
+        functionName: string,
+        arguments: string[]
+    }>
 }
