@@ -22,13 +22,15 @@ export class PoolDataCron {
     await Locker.lock(
       'Fetching pool data',
       async () => {
-        const [xExchangePools, ashswapV1Pools] = await Promise.all([
+        const [xExchangePools, ashswapV1Pools, ashswapV2Pools] = await Promise.all([
           this.modelService.loadXExchangePoolConfig(),
           this.modelService.loadAshswapV1PoolConfig(),
+          this.modelService.loadAshswapV2PoolConfig(),
         ]);
         let result = [
           ...xExchangePools,
           ...ashswapV1Pools,
+          ...ashswapV2Pools,
         ];
         const tokens = new Map<string, SubgraphToken>();;
         result.forEach((pool) => {

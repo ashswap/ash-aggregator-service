@@ -40,3 +40,4 @@ config/config.custom.yaml
 
 # ENV
 .env
+.env.*.local
