@@ -39,5 +39,6 @@ build-prod:
     IMAGE_LATEST_TAG: latest
   only:
     - /^.*-prod$/
+    - /^.*-prod-alpha$/
   except:
     - branches
