@@ -41,6 +41,13 @@ pool:
         decimal: 18
       - id: WEGLD-bd4d79
         decimal: 18
+  - address: erd1qqqqqqqqqqqqqpgqp5d4x3d263x4alnapwafwujch5xqmvyq2jpsk2xhsy
+    type: xexchange
+    tokens: 
+      - id: ASH-a642d1
+        decimal: 18
+      - id: WEGLD-bd4d79
+        decimal: 18
   - address: erd1qqqqqqqqqqqqqpgqs8p2v9wr8j48vqrmudcj94wu47kqra3r4fvshfyd9c
     type: ashswap-poolv1
     tokens: 
