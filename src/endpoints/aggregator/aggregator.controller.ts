@@ -187,4 +187,23 @@ export class AggregatorController {
     };
     return response.status(HttpStatus.OK).json(agResponse);
   }
+
+  @Get('/pool')
+  @ApiOperation({
+    summary: 'Pool',
+    description: 'Returns supporting pool',
+  })
+  async supportPool(
+    @Res() response: Response,
+  ) {
+    const dataPool = await this.cachingService.getCache<SubgraphPoolBase[]>(
+      CacheInfo.AggregatorPoolData().key,
+    );
+    if (!dataPool) {
+      return response
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json('Data is not set');
+    }
+    return response.status(HttpStatus.OK).json(dataPool);
+  }
 }

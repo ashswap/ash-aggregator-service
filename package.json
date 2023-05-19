@@ -59,7 +59,7 @@
     "@nestjs/typeorm": "^9.0.1",
     "@nestjs/websockets": "^9.3.9",
     "@sentry/browser": "^7.38.0",
-    "@trancport/aggregator": "^0.0.14",
+    "@trancport/aggregator": "^0.1.0",
     "agentkeepalive": "^4.2.1",
     "bignumber.js": "^9.1.1",
     "body-parser": "^1.20.2",
