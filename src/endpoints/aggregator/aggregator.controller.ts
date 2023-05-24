@@ -13,7 +13,7 @@ import { CachingService } from 'src/common/caching/caching.service';
 import { CacheInfo } from 'src/utils/cache.info';
 import { AggregatorResponseDto, Hop, Route, TokenId } from './aggregator.dto';
 import { BigNumber, formatFixed } from 'src/utils/bignumber';
-import { POOL_CONFIGS } from 'pool_config/configuration';
+import { POOL_CONFIGS, TOKEN_CONFIG } from 'pool_config/configuration';
 import { formatTokenIdentifier } from 'src/utils/token';
 
 @Controller()
@@ -54,15 +54,6 @@ export class AggregatorController {
         .json('Data is not set');
     }
 
-    const dataToken = await this.cachingService.getCache<[SubgraphToken]>(
-      CacheInfo.AggregatorTokenData().key,
-    );
-    if (!dataToken) {
-      return response
-        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .json('Data is not set');
-    }
-
     const sor = await this.aggregatorProvider.getSOR();
     sor.setPools(dataPool);
     const swapInfo = await sor.getSwaps(
@@ -90,11 +81,11 @@ export class AggregatorController {
       const new_route = swap.amount == '0' ? false : true;
       const swapAmount = formatFixed(
         swap.amount,
-        this.findTokenDecimal(dataToken, swap.assetIn ?? ''),
+        TOKEN_CONFIG.get(swap.assetIn ?? '')?.decimal ?? 0,
       );
       const returnAmount = formatFixed(
         swap.returnAmount ?? 0,
-        this.findTokenDecimal(dataToken, swap.assetOut ?? ''),
+        TOKEN_CONFIG.get(swap.assetOut ?? '')?.decimal ?? 0,
       );
 
       const poolConfig = POOL_CONFIGS.find(
@@ -149,11 +140,11 @@ export class AggregatorController {
 
     const swapAmount = formatFixed(
       swapInfo.swapAmount,
-      this.findTokenDecimal(dataToken, swapInfo.tokenIn),
+      TOKEN_CONFIG.get(swapInfo.tokenIn ?? '')?.decimal ?? 0,
     );
     const returnAmount = formatFixed(
       swapInfo.returnAmount,
-      this.findTokenDecimal(dataToken, swapInfo.tokenOut),
+      TOKEN_CONFIG.get(swapInfo.tokenOut ?? '')?.decimal ?? 0,
     );
 
     const effectivePrice = bnum(swapAmount).div(returnAmount);
@@ -205,5 +196,16 @@ export class AggregatorController {
         .json('Data is not set');
     }
     return response.status(HttpStatus.OK).json(dataPool);
+  }
+
+  @Get('/token')
+  @ApiOperation({
+    summary: 'Token',
+    description: 'Returns supporting tokens',
+  })
+  async supportToken(
+    @Res() response: Response,
+  ) {
+    return response.status(HttpStatus.OK).json([...TOKEN_CONFIG.values()]);
   }
 }

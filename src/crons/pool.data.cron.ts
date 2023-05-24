@@ -27,23 +27,11 @@ export class PoolDataCron {
           this.modelService.loadAshswapV1PoolConfig(),
           this.modelService.loadAshswapV2PoolConfig(),
         ]);
-        let result = [
+        const result = [
           ...xExchangePools,
           ...ashswapV1Pools,
           ...ashswapV2Pools,
         ];
-        const tokens = new Map<string, SubgraphToken>();;
-        result.forEach((pool) => {
-          pool.tokens.forEach((token) => {
-            tokens.set(token.address, token);
-          })
-        });
-
-        this.cacheService.setCache(
-          CacheInfo.AggregatorTokenData().key,
-          Array.from(tokens.values()),
-          CacheInfo.AggregatorTokenData().ttl,
-        );
 
         this.cacheService.setCache(
           CacheInfo.AggregatorPoolData().key,
