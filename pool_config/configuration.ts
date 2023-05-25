@@ -26,7 +26,7 @@ const yamlData = yaml.load(fs.readFileSync(join(__dirname, 'pool.yaml'), 'utf8')
 export const TOKEN_CONFIG: Map<string, TokenConfig> = new Map(
     yamlData.token.map((token: any) => {
         const tokenConfig = new TokenConfig();
-        tokenConfig.id = token.id;
+        tokenConfig.id = token.id.toLowerCase();
         tokenConfig.decimal = token.decimal;
         tokenConfig.coingeckoId = token.coingeckoId ?? "";
         return [tokenConfig.id, tokenConfig];
@@ -39,7 +39,7 @@ export const POOL_CONFIGS: PoolConfig[] = yamlData.pool.map((pool: any) => {
     poolConfig.address = pool.address;
     poolConfig.type = pool.type as PoolTypeConfig;
     poolConfig.tokens = pool.tokens.map((id: string) => {
-        return TOKEN_CONFIG.get(id);
+        return TOKEN_CONFIG.get(id.toLowerCase());
     });
     return poolConfig;
 });

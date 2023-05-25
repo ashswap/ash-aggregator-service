@@ -13,7 +13,7 @@ import { CachingService } from 'src/common/caching/caching.service';
 import { CacheInfo } from 'src/utils/cache.info';
 import { AggregatorResponseDto, Hop, Route, TokenId } from './aggregator.dto';
 import { BigNumber, formatFixed } from 'src/utils/bignumber';
-import { POOL_CONFIGS, TOKEN_CONFIG } from 'pool_config/configuration';
+import { POOL_CONFIGS, TOKEN_CONFIG, TokenConfig } from 'pool_config/configuration';
 import { formatTokenIdentifier } from 'src/utils/token';
 
 @Controller()
@@ -146,6 +146,10 @@ export class AggregatorController {
       swapInfo.returnAmount,
       TOKEN_CONFIG.get(swapInfo.tokenOut ?? '')?.decimal ?? 0,
     );
+    const returnAmountWithoutFee = formatFixed(
+      swapInfo.returnAmountConsideringSwapFees,
+      TOKEN_CONFIG.get(swapInfo.tokenOut ?? '')?.decimal ?? 0,
+    );
 
     const effectivePrice = bnum(swapAmount).div(returnAmount);
     const effectivePriceReversed = bnum(returnAmount).div(swapAmount);
@@ -153,6 +157,7 @@ export class AggregatorController {
 
     swapInfo.swapAmount = swapAmount;
     swapInfo.returnAmount = returnAmount;
+    swapInfo.returnAmountConsideringSwapFees = returnAmountWithoutFee;
     const agResponse: AggregatorResponseDto = {
       ...swapInfo,
       effectivePrice: effectivePrice.toNumber(),
@@ -179,7 +184,7 @@ export class AggregatorController {
     return response.status(HttpStatus.OK).json(agResponse);
   }
 
-  @Get('/pool')
+  @Get('/pools')
   @ApiOperation({
     summary: 'Pool',
     description: 'Returns supporting pool',
@@ -198,7 +203,7 @@ export class AggregatorController {
     return response.status(HttpStatus.OK).json(dataPool);
   }
 
-  @Get('/token')
+  @Get('/tokens')
   @ApiOperation({
     summary: 'Token',
     description: 'Returns supporting tokens',
@@ -206,6 +211,18 @@ export class AggregatorController {
   async supportToken(
     @Res() response: Response,
   ) {
-    return response.status(HttpStatus.OK).json([...TOKEN_CONFIG.values()]);
+    let tokenConfig = await this.cachingService.getCache<TokenConfig[]>(
+      CacheInfo.AggregatorTokenData().key,
+    );
+    tokenConfig = [...TOKEN_CONFIG.values()];
+    for (const token of tokenConfig) {
+      token.id = formatTokenIdentifier(token.id);
+    }
+    this.cachingService.setCache<TokenConfig[]>(
+      CacheInfo.AggregatorTokenData().key,
+      tokenConfig,
+      CacheInfo.AggregatorTokenData().ttl,
+    );
+    return response.status(HttpStatus.OK).json(tokenConfig);
   }
 }
