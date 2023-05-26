@@ -151,9 +151,10 @@ export class AggregatorController {
       TOKEN_CONFIG.get(swapInfo.tokenOut ?? '')?.decimal ?? 0,
     );
 
+    const ONE = BigNumber.from(1);
     const effectivePrice = bnum(swapAmount).div(returnAmount);
     const effectivePriceReversed = bnum(returnAmount).div(swapAmount);
-    const priceImpact = effectivePrice.div(swapInfo.marketSp).minus(1);
+    const priceImpact = ONE.sub(bnum(swapInfo.marketSp).div(effectivePrice));
 
     swapInfo.swapAmount = swapAmount;
     swapInfo.returnAmount = returnAmount;
