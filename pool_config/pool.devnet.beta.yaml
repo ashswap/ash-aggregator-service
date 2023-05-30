@@ -175,6 +175,11 @@ pool:
     tokens: 
       - USDT-188935
       - HTM-fe1f69
+  - address: erd1qqqqqqqqqqqqqpgq7ltf5gt22mvg2qvdh0p9nkcxm3jqct5e2gesds2lnw
+    type: ashswap-poolv1
+    tokens: 
+      - ASH-4ce444
+      - JWLASH-8bfcd2
 token:
   - decimal: 18
     id: WEGLD-d7c6bb
@@ -226,3 +231,5 @@ token:
     id: SNS-ffcb8c
   - decimal: 18
     id: CT01-560b08
+  - decimal: 18
+    id: JWLASH-8bfcd2
