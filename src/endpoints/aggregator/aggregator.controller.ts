@@ -147,7 +147,7 @@ export class AggregatorController {
       TOKEN_CONFIG.get(swapInfo.tokenOut ?? '')?.decimal ?? 0,
     );
     const returnAmountWithoutFee = formatFixed(
-      swapInfo.returnAmountConsideringSwapFees,
+      swapInfo.returnAmountWithoutSwapFees,
       TOKEN_CONFIG.get(swapInfo.tokenOut ?? '')?.decimal ?? 0,
     );
 
@@ -158,7 +158,7 @@ export class AggregatorController {
 
     swapInfo.swapAmount = swapAmount;
     swapInfo.returnAmount = returnAmount;
-    swapInfo.returnAmountConsideringSwapFees = returnAmountWithoutFee;
+    swapInfo.returnAmountWithoutSwapFees = returnAmountWithoutFee;
     const agResponse: AggregatorResponseDto = {
       ...swapInfo,
       effectivePrice: effectivePrice.toNumber(),
