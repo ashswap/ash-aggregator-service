@@ -155,6 +155,26 @@ pool:
       - USDC-8d4068
       - USDT-188935
       - BUSD-632f7d
+  - address: erd1qqqqqqqqqqqqqpgq6t46575knqqfamnchlfgxvd56x2ymhvf2ges6xpr4s
+    type: ashswap-poolv1
+    tokens: 
+      - WEGLD-d7c6bb
+      - SEGLD-90b353
+  - address: erd1qqqqqqqqqqqqqpgqn4uu4yauhv8pjjvhvgxmhyqk82ftzytq2gesrmrprk
+    type: ashswap-poolv1
+    tokens: 
+      - WEGLD-d7c6bb
+      - HSEGLD-8f2360
+  - address: erd1qqqqqqqqqqqqqpgq3du96js0eu7aa43wqpphh3wy969es5ws2gesx49un4
+    type: ashswap-poolv1
+    tokens: 
+      - WEGLD-d7c6bb
+      - LEGLD-3e7182
+  - address: erd1qqqqqqqqqqqqqpgq7ltf5gt22mvg2qvdh0p9nkcxm3jqct5e2gesds2lnw
+    type: ashswap-poolv1
+    tokens: 
+      - ASH-4ce444
+      - JWLASH-8bfcd2
   - address: erd1qqqqqqqqqqqqqpgq65a4d6rv2czrk3uvfcxan7543geyvdp82ges44d43y
     type: ashswap-poolv2
     tokens: 
@@ -231,5 +251,11 @@ token:
     id: SNS-ffcb8c
   - decimal: 18
     id: CT01-560b08
+  - decimal: 18
+    id: SEGLD-90b353
+  - decimal: 8
+    id: HSEGLD-8f2360
+  - decimal: 18
+    id: LEGLD-3e7182
   - decimal: 18
     id: JWLASH-8bfcd2

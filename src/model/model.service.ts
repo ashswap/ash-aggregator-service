@@ -96,6 +96,7 @@ export class ModelService {
                     adminFeePercent,
                     ampFactor,
                     state,
+                    underlyingPrices,
                 }
             }`,
             {}
@@ -116,6 +117,7 @@ export class ModelService {
                         balance: formatFixed(BigNumber.from(pool.reserves[index]), poolConfig.tokens[index].decimal as number),
                         decimals: poolConfig.tokens[index].decimal,
                         priceRate: "1",
+                        underlyingPrice: pool.underlyingPrices[index],
                     };
                     tokens.push(data);
                     tokensList.push((token.id as string).toLowerCase());
