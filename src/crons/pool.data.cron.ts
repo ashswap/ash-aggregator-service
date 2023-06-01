@@ -5,7 +5,6 @@ import { Logger } from '@nestjs/common';
 import { ModelService } from 'src/model/model.service';
 import { CachingService } from 'src/common/caching/caching.service';
 import { CacheInfo } from 'src/utils/cache.info';
-import { SubgraphToken } from '@trancport/aggregator';
 
 @Injectable()
 export class PoolDataCron {
