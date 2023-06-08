@@ -94,6 +94,26 @@ token:
   - id: BUSD-40b57e
     decimal: 18
     coingeckoId: binance-usd
+  - id: SFIT-aebc90
+    decimal: 18
+    coingeckoId: sense4fit
+  - id: CYBER-489c1c
+    decimal: 18
+    coingeckoId: cyberpunk-city
+  - id: MID-ecb7bf
+    decimal: 18
+  - id: XAPES-1d15a5
+    decimal: 18
+  - id: HYPE-619661
+    decimal: 18
+    coingeckoId: superrarebears-hype
+  - id: ZOG-c66239
+    decimal: 6
+  - id: MERMAID-9c388a
+    decimal: 18
+  - id: ONE-f9954f
+    decimal: 18
+    coingeckoId: onedex
 pool:
   - address: erd1qqqqqqqqqqqqqpgqa0fsfshnff4n76jhcye6k7uvd7qacsq42jpsp6shh2
     type: xexchange
@@ -109,7 +129,7 @@ pool:
     type: xexchange
     tokens:
       - WEGLD-bd4d79
-      - RIDE-7d18e
+      - RIDE-7d18e9
   - address: erd1qqqqqqqqqqqqqpgqh3c7mg0dfe5z0t3468wwp08xz3ex25ah2jpsv4pcdl
     type: xexchange
     tokens:
