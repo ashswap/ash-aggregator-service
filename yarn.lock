@@ -1218,11 +1218,12 @@
   "resolved" "https://registry.npmjs.org/@sqltools/formatter/-/formatter-1.2.5.tgz"
   "version" "1.2.5"
 
-"@trancport/aggregator@0.1.8":
-  "integrity" "sha1-uMMBpxY3T4zb5tA58QJOaqWsP/0="
-  "resolved" "https://gitlab.com/api/v4/projects/44133673/packages/npm/@trancport/aggregator/-/@trancport/aggregator-0.1.8.tgz"
-  "version" "0.1.8"
+"@trancport/aggregator@0.1.9":
+  "integrity" "sha1-EbjLW58qH+6H27ewiKD7reIgKzM="
+  "resolved" "https://gitlab.com/api/v4/projects/44133673/packages/npm/@trancport/aggregator/-/@trancport/aggregator-0.1.9.tgz"
+  "version" "0.1.9"
   dependencies:
+    "heap" "^0.2.7"
     "isomorphic-fetch" "^2.2.1"
 
 "@tsconfig/node10@^1.0.7":
@@ -3672,6 +3673,11 @@
     "inherits" "^2.0.4"
     "readable-stream" "^3.6.0"
     "safe-buffer" "^5.2.0"
+
+"heap@^0.2.7":
+  "integrity" "sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg=="
+  "resolved" "https://registry.npmjs.org/heap/-/heap-0.2.7.tgz"
+  "version" "0.2.7"
 
 "highlight.js@^10.7.1":
   "integrity" "sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A=="
