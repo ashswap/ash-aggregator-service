@@ -58,6 +58,7 @@
     "@nestjs/swagger": "^6.2.1",
     "@nestjs/typeorm": "^9.0.1",
     "@nestjs/websockets": "^9.3.9",
+    "@ntegral/nestjs-sentry": "^4.0.0",
     "@sentry/browser": "^7.38.0",
     "@trancport/aggregator": "0.1.9",
     "agentkeepalive": "^4.2.1",
