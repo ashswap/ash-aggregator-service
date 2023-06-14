@@ -114,6 +114,20 @@ token:
   - id: ONE-f9954f
     decimal: 18
     coingeckoId: onedex
+  - id: INFRA-43985c
+    decimal: 18
+    coingeckoId: bware-infra
+  - id: LEGLD-d74da9
+    decimal: 18
+  - id: WBTC-5349b3
+    decimal: 8
+    coingeckoId: wrapped-bitcoin
+  - id: WETH-b4ca29
+    decimal: 18
+    coingeckoId: weth
+  - id: KOSON-5dd4fa
+    decimal: 18
+    coingeckoId: age-of-zalmoxis-koson
 pool:
   - address: erd1qqqqqqqqqqqqqpgqa0fsfshnff4n76jhcye6k7uvd7qacsq42jpsp6shh2
     type: xexchange
@@ -346,3 +360,28 @@ pool:
     tokens: 
       - USDT-f8c08c
       - ASH-a642d1
+  - address: erd1qqqqqqqqqqqqqpgqc9q8acdqxz84p5p4ghc7gkrc62smjfnr2jpsd9azcd
+    type: xexchange
+    tokens:
+      - INFRA-43985c
+      - WEGLD-bd4d79
+  - address: erd1qqqqqqqqqqqqqpgqfw6ydg978w4r3qzx3c94el0nju3x59492jpsm8c5a9
+    type: xexchange
+    tokens:
+      - LEGLD-d74da9
+      - USDC-c76f1f
+  - address: erd1qqqqqqqqqqqqqpgqq6y660esmedtm0neqwgkddfezuys68k42jps7pu0r9
+    type: xexchange
+    tokens:
+      - WBTC-5349b3
+      - WEGLD-bd4d79
+  - address: erd1qqqqqqqqqqqqqpgqt0uek344kaerr4gf9g2r8l0f4l8ygyha2jps82u9r6
+    type: xexchange
+    tokens:
+      - WETH-b4ca29
+      - WEGLD-bd4d79
+  - address: erd1qqqqqqqqqqqqqpgqxmsngnxqf3f7upnzj59juv3x7evq2egr2jps2qfzva
+    type: xexchange
+    tokens:
+      - KOSON-5dd4fa
+      - USDC-c76f1f
