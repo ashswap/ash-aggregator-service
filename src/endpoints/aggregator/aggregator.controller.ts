@@ -15,12 +15,14 @@ import { AggregatorResponseDto, Hop, Route, TokenId } from './aggregator.dto';
 import { BigNumber, formatFixed } from 'src/utils/bignumber';
 import { POOL_CONFIGS, TOKEN_CONFIG, TokenConfig } from 'pool_config/configuration';
 import { formatTokenIdentifier } from 'src/utils/token';
+import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
 
 @Controller()
 export class AggregatorController {
   constructor(
     private readonly aggregatorProvider: AggregatorProvider,
     private readonly cachingService: CachingService,
+    @InjectSentry() private readonly sentryService: SentryService
   ) {}
 
   private findTokenDecimal(
@@ -49,6 +51,7 @@ export class AggregatorController {
       CacheInfo.AggregatorPoolData().key,
     );
     if (!dataPool) {
+      this.sentryService.error('Pool data is not set');
       return response
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .json('Data is not set');
@@ -154,7 +157,7 @@ export class AggregatorController {
     const ONE = BigNumber.from(1);
     const effectivePrice = bnum(swapAmount).div(returnAmount);
     const effectivePriceReversed = bnum(returnAmount).div(swapAmount);
-    const priceImpact = ONE.sub(bnum(swapInfo.marketSp).div(effectivePrice));
+    const priceImpact = BigNumber.max(ONE.sub(bnum(swapInfo.marketSp).div(effectivePrice)),0);
 
     swapInfo.swapAmount = swapAmount;
     swapInfo.returnAmount = returnAmount;
@@ -182,6 +185,18 @@ export class AggregatorController {
         }),
       ],
     };
+    if (priceImpact.lte(0)) {
+      this.sentryService.debug('Context data', JSON.stringify(
+        {
+          sourceToken: sourceToken,
+          destToken: destToken,
+          amount: amount,
+          swapInfo: agResponse,
+          pools: dataPool,
+        }
+      ), true);
+      this.sentryService.error('Price impact is negative');
+    }
     return response.status(HttpStatus.OK).json(agResponse);
   }
 

@@ -1,29 +1,35 @@
 import { Provider } from '@nestjs/common';
-import {
-  ClientOptions,
-  ClientProxyFactory,
-  Transport,
-} from '@nestjs/microservices';
 import { ApiConfigService } from 'src/common/api-config/api.config.service';
+import {
+  GraphqlInterceptor,
+  SentryModuleAsyncOptions,
+} from '@ntegral/nestjs-sentry';
+import { ApiConfigModule } from 'src/common/api-config/api.config.module';
+import { APP_INTERCEPTOR } from '@nestjs/core/constants';
 
 export class DynamicModuleUtils {
-  static getPubSubService(): Provider {
+  static getSentryModuleAsyncOptions(): SentryModuleAsyncOptions {
     return {
-      provide: 'PUBSUB_SERVICE',
-      useFactory: (apiConfigService: ApiConfigService) => {
-        const clientOptions: ClientOptions = {
-          transport: Transport.REDIS,
-          options: {
-            host: apiConfigService.getRedisUrl(),
-            port: apiConfigService.getRedisPort(),
-            retryDelay: 1000,
-            retryAttempts: 10,
-          },
+      imports: [ApiConfigModule],
+      useFactory: async (apiConfigService: ApiConfigService) => {
+        return {
+          dsn: apiConfigService.getSentryDsn(),
+          debug: true,
+          logLevels: ['error', 'warn', 'debug'],
+          environment:
+            process.env.NODE_ENV !== 'production'
+              ? 'development'
+              : 'production',
         };
-
-        return ClientProxyFactory.create(clientOptions);
       },
       inject: [ApiConfigService],
+    };
+  }
+
+  static getSentryService(): Provider {
+    return {
+      provide: APP_INTERCEPTOR,
+      useFactory: () => new GraphqlInterceptor(),
     };
   }
 }
