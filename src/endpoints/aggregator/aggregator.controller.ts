@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Controller, Get, HttpStatus, Query, Res } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Query, Res, UseGuards } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { AggregatorProvider } from 'src/common/aggregator/aggregator.provider';
 import {
@@ -16,6 +16,7 @@ import { BigNumber, formatFixed } from 'src/utils/bignumber';
 import { POOL_CONFIGS, TOKEN_CONFIG, TokenConfig } from 'pool_config/configuration';
 import { formatTokenIdentifier } from 'src/utils/token';
 import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
+import { tokenSecretGuard } from 'src/utils/guards/token.secret.guard';
 
 @Controller()
 export class AggregatorController {
@@ -32,6 +33,7 @@ export class AggregatorController {
     return dataToken.find((token) => token.address == tokenId)?.decimals ?? 0;
   }
 
+  @UseGuards(tokenSecretGuard)
   @Get('/aggregate')
   @ApiOperation({
     summary: 'Aggregate',
@@ -201,6 +203,7 @@ export class AggregatorController {
     return response.status(HttpStatus.OK).json(agResponse);
   }
 
+  @UseGuards(tokenSecretGuard)
   @Get('/pools')
   @ApiOperation({
     summary: 'Pool',
@@ -220,6 +223,7 @@ export class AggregatorController {
     return response.status(HttpStatus.OK).json(dataPool);
   }
 
+  @UseGuards(tokenSecretGuard)
   @Get('/tokens')
   @ApiOperation({
     summary: 'Token',

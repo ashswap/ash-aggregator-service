@@ -361,6 +361,20 @@ export class ApiConfigService {
     return jwtSecret;
   }
 
+  isTokenSecretEnabled(): boolean {
+    const tokenSecret = this.configService.get<boolean>('security.enable') ?? false;
+    return tokenSecret;
+  }
+
+  getTokenSecret(): string {
+    const tokenSecret = this.configService.get<string>('security.tokenSecret');
+    if (!tokenSecret) {
+      throw new Error('No tokenSecret present');
+    }
+
+    return tokenSecret;
+  }
+
   getSecurityAdmins(): string[] {
     const admins = this.configService.get<string[]>('security.admins');
     if (admins === undefined) {
