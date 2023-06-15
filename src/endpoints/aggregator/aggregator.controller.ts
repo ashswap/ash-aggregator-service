@@ -162,6 +162,7 @@ export class AggregatorController {
     swapInfo.swapAmount = swapAmount;
     swapInfo.returnAmount = returnAmount;
     swapInfo.returnAmountWithoutSwapFees = returnAmountWithoutFee;
+    swapInfo.tokenAddresses = swapInfo.tokenAddresses.map((token) => formatTokenIdentifier(token));
     const agResponse: AggregatorResponseDto = {
       ...swapInfo,
       effectivePrice: effectivePrice.toNumber(),
