@@ -367,7 +367,7 @@ export class ApiConfigService {
   }
 
   getTokenSecret(): string {
-    const tokenSecret = this.configService.get<string>('security.tokenSecret');
+    const tokenSecret = this.configService.get<string>('security.tokenSecret')?.toString();
     if (!tokenSecret) {
       throw new Error('No tokenSecret present');
     }
