@@ -39,6 +39,17 @@ build-prod:
     IMAGE_LATEST_TAG: latest
   only:
     - /^.*-prod$/
+  except:
+    - branches
+
+build-prod-gamma:
+  extends: .build
+  variables:
+    ENV: mainnet.alpha
+    GITLAB_TOKEN: $GITLAB_TOKEN
+    IMAGE_TAG: $CI_COMMIT_TAG
+    IMAGE_LATEST_TAG: latest
+  only:
     - /^.*-prod-gamma$/
   except:
     - branches
