@@ -137,6 +137,12 @@ token:
   - id: BUSD-2cbb2d
     decimal: 18
     coingeckoId: binance-usd
+  - id: ASH-a85626
+    decimal: 18
+    coingeckoId: ashswap
+  - id: WEGLD-795247
+    decimal: 18
+    coingeckoId: wrapped-elrond
 pool:
   - address: erd1qqqqqqqqqqqqqpgqa0fsfshnff4n76jhcye6k7uvd7qacsq42jpsp6shh2
     type: xexchange
