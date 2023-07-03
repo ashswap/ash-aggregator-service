@@ -143,6 +143,10 @@ token:
   - id: WEGLD-795247
     decimal: 18
     coingeckoId: wrapped-elrond
+  - decimal: 18
+    id: SEGLD-71d86c
+  - decimal: 8
+    id: HSEGLD-0abbe5
 pool:
   - address: erd1qqqqqqqqqqqqqpgqa0fsfshnff4n76jhcye6k7uvd7qacsq42jpsp6shh2
     type: xexchange
@@ -359,22 +363,6 @@ pool:
     tokens:
       - ONE-f9954f
       - WEGLD-bd4d79
-  - address: erd1qqqqqqqqqqqqqpgqs8p2v9wr8j48vqrmudcj94wu47kqra3r4fvshfyd9c
-    type: ashswap-poolv1
-    tokens: 
-      - USDC-c76f1f
-      - USDT-f8c08c
-      - BUSD-40b57e
-  - address: erd1qqqqqqqqqqqqqpgq5l05l0ts4lphdktx33apl0ss9rzf4r244fvsva6j53
-    type: ashswap-poolv2
-    tokens: 
-      - BUSD-40b57e
-      - WEGLD-bd4d79
-  - address: erd1qqqqqqqqqqqqqpgqn7969pvzaatp8p9yu6u5h2ce2gyw0x9j4fvsplvthl
-    type: ashswap-poolv2
-    tokens: 
-      - USDT-f8c08c
-      - ASH-a642d1
   - address: erd1qqqqqqqqqqqqqpgqc9q8acdqxz84p5p4ghc7gkrc62smjfnr2jpsd9azcd
     type: xexchange
     tokens:
@@ -416,3 +404,13 @@ pool:
     tokens: 
       - USDT-821a84
       - ASH-a85626
+  - address: erd1qqqqqqqqqqqqqpgqajse90jlslthwg4eg3dxhu0ktk7hfer92ges8drem3
+    type: ashswap-poolv1
+    tokens: 
+      - SEGLD-71d86c
+      - WEGLD-795247
+  - address: erd1qqqqqqqqqqqqqpgqe2e53xuw7g8mwx46x3p5sn29ry0xtzru2gesx76d6t
+    type: ashswap-poolv1
+    tokens: 
+      - SEGLD-71d86c
+      - HSEGLD-0abbe5
