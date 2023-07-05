@@ -187,7 +187,7 @@ export class ModelService {
         for (const poolConfig of POOL_CONFIGS) {
             if (poolConfig.type == PoolTypeConfig.ASHSWAP_V2 ) {
                 const pool = addressPoolResponse.get(poolConfig.address);
-                if (!pool.state) continue;
+                if (pool.state !== "Active") continue;
                 const tokensList : string[] = [];
                 const tokens: SubgraphToken[] = [];
                 pool.tokens.forEach((token: { id: string; }, index: number) => {

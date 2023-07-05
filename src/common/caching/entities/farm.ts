@@ -4,7 +4,7 @@ export type CacheFarmContract = {
   rewardTokenId: string;
   farmingTokenId: string;
   farmTokenSupply: string;
-  state: boolean;
+  state: string;
   rewardPerSec: string;
   rewardPerShare: string;
   lastRewardBlockTs: number;
