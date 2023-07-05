@@ -7,5 +7,5 @@ export type CachePoolContract = {
   swapFeePercent: string;
   adminFeePercent: string;
   ampFactor: string;
-  state: boolean;
+  state: string;
 };
