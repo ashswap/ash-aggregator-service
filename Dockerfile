@@ -15,7 +15,6 @@ RUN echo "@trancport:registry=https://gitlab.com/api/v4/projects/44133673/packag
 RUN npm ci --only=development
 
 COPY --chown=node:node . .
-COPY --chown=node:node /pool_config/pool.${ENV}.yaml ./pool_config/pool.yaml
 
 RUN npm run build
 USER node

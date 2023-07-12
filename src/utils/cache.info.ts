@@ -165,9 +165,9 @@ export class CacheInfo {
     };
   }
 
-  static AggregatorPoolData(): CacheInfo {
+  static AggregatorPoolData(protocol = "*"): CacheInfo {
     return {
-      key: `aggregator:pool`,
+      key: `aggregator:pool:${protocol}`,
       ttl: Constants.oneMinute(),
     };
   }

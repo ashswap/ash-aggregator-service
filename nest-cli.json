@@ -12,6 +12,14 @@
         "outDir": "./dist/pool_config"
       },
       {
+        "include": "../src/model/**/*.yaml",
+        "outDir": "./dist/src"
+      },
+      {
+        "include": "../src/model/**/*.abi.json",
+        "outDir": "./dist/src"
+      },
+      {
         "include": "../docs/swagger.md",
         "outDir": "./dist/docs"
       },

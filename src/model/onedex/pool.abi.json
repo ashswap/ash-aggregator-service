@@ -1,0 +1,125 @@
+{
+    "buildInfo": {
+        "rustc": {
+            "version": "1.60.0-nightly",
+            "commitHash": "a00e130dae74a213338e2b095ec855156d8f3d8a",
+            "commitDate": "2022-01-29",
+            "channel": "Nightly",
+            "short": "rustc 1.60.0-nightly (a00e130da 2022-01-29)"
+        },
+        "contractCrate": {
+            "name": "pair",
+            "version": "0.0.0"
+        },
+        "framework": {
+            "name": "elrond-wasm",
+            "version": "0.29.3"
+        }
+    },
+    "name": "Pair",
+    "endpoints": [
+        {
+            "name": "viewPairs",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "variadic<OnedexPool>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "getTotalFeePercent",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "swapMultiTokensFixedInput",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "*"
+            ],
+            "inputs": [
+                {
+                    "name": "_amount_out_min",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "_unknown",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "_token_in",
+                    "type": "TokenIdentifier"
+                },
+                {
+                    "name": "_token_out",
+                    "type": "TokenIdentifier"
+                }
+            ],
+            "outputs": []
+        }
+    ],
+    "hasCallback": false,
+    "types": {
+        "OnedexPool": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "u32"
+                },
+                {
+                    "name": "status",
+                    "type": "u8"
+                },
+                {
+                    "name": "unknown_0",
+                    "type": "u8"
+                },
+                {
+                    "name": "pool_owner",
+                    "type": "Address"
+                },
+                {
+                    "name": "token_id_0",
+                    "type": "TokenIdentifier"
+                },
+                {
+                    "name": "token_id_1",
+                    "type": "TokenIdentifier"
+                },
+                {
+                    "name": "lp_token_id",
+                    "type": "TokenIdentifier"
+                },
+                {
+                    "name": "lp_decimal",
+                    "type": "u32"
+                },
+                {
+                    "name": "reserve_0",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "reserve_1",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "total_lp",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "unknown_1",
+                    "type": "u8"
+                }
+            ]
+        }
+    }
+}

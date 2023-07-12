@@ -1,0 +1,36 @@
+token:
+  - id: WEGLD-bd4d79
+    decimal: 18
+    coingeckoId: wrapped-elrond
+  - id: ONE-f9954f
+    decimal: 18
+    coingeckoId: onedex
+  - id: USDC-c76f1f
+    decimal: 6
+    coingeckoId: usd-coin
+  - id: USDT-f8c08c
+    decimal: 6
+    coingeckoId: tether
+  - id: LEGLD-d74da9
+    decimal: 18
+pool:
+  - address: erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc
+    type: onedex
+    tokens:
+      - ONE-f9954f
+      - WEGLD-bd4d79
+  - address: erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc
+    type: onedex
+    tokens:
+      - USDC-c76f1f
+      - WEGLD-bd4d79
+  - address: erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc
+    type: onedex
+    tokens:
+      - USDC-c76f1f
+      - USDT-f8c08c
+  - address: erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc
+    type: onedex
+    tokens:
+      - LEGLD-d74da9
+      - WEGLD-bd4d79
