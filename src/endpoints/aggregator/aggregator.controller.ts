@@ -5,32 +5,65 @@ import { AggregatorProvider } from 'src/common/aggregator/aggregator.provider';
 import {
   PoolFilter,
   SubgraphPoolBase,
-  SubgraphToken,
   SwapTypes,
+  SwapV2,
   bnum,
 } from '@trancport/aggregator';
 import { CachingService } from 'src/common/caching/caching.service';
 import { CacheInfo } from 'src/utils/cache.info';
 import { AggregatorResponseDto, Hop, Route, TokenId } from './aggregator.dto';
 import { BigNumber, formatFixed } from 'src/utils/bignumber';
-import { POOL_CONFIGS, TOKEN_CONFIG, TokenConfig } from 'pool_config/configuration';
 import { formatTokenIdentifier } from 'src/utils/token';
 import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
 import { tokenSecretGuard } from 'src/utils/guards/token.secret.guard';
+import { ModelService } from 'src/model/model.service';
 
 @Controller()
 export class AggregatorController {
   constructor(
     private readonly aggregatorProvider: AggregatorProvider,
     private readonly cachingService: CachingService,
+    private readonly modelService: ModelService,
     @InjectSentry() private readonly sentryService: SentryService
   ) {}
 
-  private findTokenDecimal(
-    dataToken: [SubgraphToken],
-    tokenId: string,
-  ): number {
-    return dataToken.find((token) => token.address == tokenId)?.decimals ?? 0;
+  private async getExchangeConfig(s: SwapV2): Promise<SwapV2 & { functionName: string; arguments: string[]; }> {
+    const exchangeProtocol = await this.modelService.getProviderFromAddress(
+      s.poolId
+    );
+    if (!exchangeProtocol) {
+      this.sentryService.error('Exchange protocol is not set');
+      throw new Error('Exchange protocol is not set');
+    }
+    const assetIn = formatTokenIdentifier(s.assetIn || '');
+    const assetOut = formatTokenIdentifier(s.assetOut || '');
+    const exchangeConfig = await exchangeProtocol.getExecutionInput(s.poolId, assetIn, assetOut);
+    if (!exchangeConfig) {
+      this.sentryService.error('Exchange config is not set');
+      throw new Error('Exchange config is not set');
+    }
+    return {
+      ...s,
+      assetIn: assetIn,
+      assetOut: assetOut,
+      ...exchangeConfig,
+    };
+  }
+
+  private async getPoolData() {
+    const keyStr = CacheInfo.AggregatorPoolData().key;
+    const keys = await this.cachingService.getKeys(keyStr);
+    const dataPools = [];
+    if (keys.length > 0) {
+      for (const key of keys) {
+        const dataPool = await this.cachingService.getCache<SubgraphPoolBase[]>(
+          key,
+        );
+        if (dataPool)
+          dataPools.push(...dataPool);
+      }
+    }
+    return dataPools;
   }
 
   @UseGuards(tokenSecretGuard)
@@ -49,9 +82,7 @@ export class AggregatorController {
       return response.status(HttpStatus.BAD_REQUEST).json();
     }
 
-    const dataPool = await this.cachingService.getCache<SubgraphPoolBase[]>(
-      CacheInfo.AggregatorPoolData().key,
-    );
+    const dataPool = await this.getPoolData();
     if (!dataPool) {
       this.sentryService.error('Pool data is not set');
       return response
@@ -59,7 +90,7 @@ export class AggregatorController {
         .json('Data is not set');
     }
 
-    const sor = await this.aggregatorProvider.getSOR();
+    const sor = this.aggregatorProvider.getSOR();
     sor.setPools(dataPool);
     const swapInfo = await sor.getSwaps(
       sourceToken,
@@ -70,7 +101,7 @@ export class AggregatorController {
         gasPrice: BigNumber.from(0),
         swapGas: BigNumber.from(0),
         poolTypeFilter: PoolFilter.All,
-        maxPools: 4,
+        maxPools: 5,
         timestamp: Math.floor(Date.now() / 1000),
         forceRefresh: true,
       },
@@ -83,20 +114,17 @@ export class AggregatorController {
     };
     let hop: Hop;
     for (const [index, swap] of swapInfo.swaps.entries()) {
+      const poolConfig = this.modelService.getPoolConfigByID(swap.poolId);
       const new_route = swap.amount == '0' ? false : true;
       const swapAmount = formatFixed(
         swap.amount,
-        TOKEN_CONFIG.get(swap.assetIn ?? '')?.decimal ?? 0,
+        this.modelService.getTokenConfigByID(swap.assetIn ?? '')?.decimal ?? 0,
       );
       const returnAmount = formatFixed(
         swap.returnAmount ?? 0,
-        TOKEN_CONFIG.get(swap.assetOut ?? '')?.decimal ?? 0,
+        this.modelService.getTokenConfigByID(swap.assetOut ?? '')?.decimal ?? 0,
       );
-
-      const poolConfig = POOL_CONFIGS.find(
-        (poolConfig) => poolConfig.address == swap.poolId,
-      );
-
+      swap.poolId = poolConfig?.address ?? "";
       hop = {
         poolId: swap.poolId,
         pool: {
@@ -145,15 +173,15 @@ export class AggregatorController {
 
     const swapAmount = formatFixed(
       swapInfo.swapAmount,
-      TOKEN_CONFIG.get(swapInfo.tokenIn ?? '')?.decimal ?? 0,
+      this.modelService.getTokenConfigByID(swapInfo.tokenIn ?? '')?.decimal ?? 0,
     );
     const returnAmount = formatFixed(
       swapInfo.returnAmount,
-      TOKEN_CONFIG.get(swapInfo.tokenOut ?? '')?.decimal ?? 0,
+      this.modelService.getTokenConfigByID(swapInfo.tokenOut ?? '')?.decimal ?? 0,
     );
     const returnAmountWithoutFee = formatFixed(
       swapInfo.returnAmountWithoutSwapFees,
-      TOKEN_CONFIG.get(swapInfo.tokenOut ?? '')?.decimal ?? 0,
+      this.modelService.getTokenConfigByID(swapInfo.tokenOut ?? '')?.decimal ?? 0,
     );
 
     const ONE = BigNumber.from(1);
@@ -165,6 +193,14 @@ export class AggregatorController {
     swapInfo.returnAmount = returnAmount;
     swapInfo.returnAmountWithoutSwapFees = returnAmountWithoutFee;
     swapInfo.tokenAddresses = swapInfo.tokenAddresses.map((token) => formatTokenIdentifier(token));
+    
+    const swaps = [];
+
+    for (const swap of swapInfo.swaps) {
+      const swapInfo = await this.getExchangeConfig(swap);
+      swaps.push(swapInfo);
+    }
+
     const agResponse: AggregatorResponseDto = {
       ...swapInfo,
       effectivePrice: effectivePrice.toNumber(),
@@ -174,18 +210,7 @@ export class AggregatorController {
       tokenIn: formatTokenIdentifier(swapInfo.tokenIn),
       tokenOut: formatTokenIdentifier(swapInfo.tokenOut),
       swaps: [
-        ...swapInfo.swaps.map((s) => {
-          const exchangeConfig = this.aggregatorProvider.getExchangeConfig(
-            s.poolId,
-            formatTokenIdentifier(s.assetOut || ''),
-          );
-          return {
-            ...s,
-            assetIn: formatTokenIdentifier(s.assetIn || ''),
-            assetOut: formatTokenIdentifier(s.assetOut || ''),
-            ...exchangeConfig,
-          };
-        }),
+        ...swaps,
       ],
     };
     if (priceImpact.lte(0)) {
@@ -212,9 +237,7 @@ export class AggregatorController {
   async supportPool(
     @Res() response: Response,
   ) {
-    const dataPool = await this.cachingService.getCache<SubgraphPoolBase[]>(
-      CacheInfo.AggregatorPoolData().key,
-    );
+    const dataPool = await this.getPoolData();
     if (!dataPool) {
       return response
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -232,18 +255,10 @@ export class AggregatorController {
   async supportToken(
     @Res() response: Response,
   ) {
-    let tokenConfig = await this.cachingService.getCache<TokenConfig[]>(
-      CacheInfo.AggregatorTokenData().key,
-    );
-    tokenConfig = [...TOKEN_CONFIG.values()];
+    const tokenConfig = this.modelService.getTokenConfigs();
     for (const token of tokenConfig) {
       token.id = formatTokenIdentifier(token.id);
     }
-    this.cachingService.setCache<TokenConfig[]>(
-      CacheInfo.AggregatorTokenData().key,
-      tokenConfig,
-      CacheInfo.AggregatorTokenData().ttl,
-    );
     return response.status(HttpStatus.OK).json(tokenConfig);
   }
 }

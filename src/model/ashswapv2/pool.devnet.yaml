@@ -1,0 +1,84 @@
+token:
+  - decimal: 18
+    id: WEGLD-d7c6bb
+  - decimal: 18
+    id: MEX-dc289c
+  - decimal: 6
+    id: USDC-8d4068
+  - decimal: 18
+    id: RIDE-6e4c49
+  - decimal: 18
+    id: DTK-5935ad
+  - decimal: 18
+    id: WEB-5d08be
+  - decimal: 18
+    id: XZPAY-ab2d80
+  - decimal: 18
+    id: SPK-8a02e1
+  - decimal: 18
+    id: LTK-e142a7
+  - decimal: 18
+    id: PROTEO-d1ef39
+  - decimal: 18
+    id: THK-bf93ca
+  - decimal: 5
+    id: CHECKR-7ede52
+  - decimal: 18
+    id: DSUPER-9af8df
+  - decimal: 18
+    id: ASH-4ce444
+  - decimal: 18
+    id: XOXNO-2d9386
+  - decimal: 18
+    id: TIX-75a921
+  - decimal: 18
+    id: UTK-a2a792
+  - decimal: 18
+    id: BUSD-632f7d
+  - decimal: 6
+    id: USDT-188935
+  - decimal: 18
+    id: HTM-fe1f69
+  - decimal: 18
+    id: TIN-cecfed
+  - decimal: 18
+    id: XCR-4f8eec
+  - decimal: 18
+    id: EFOO-8e80a5
+  - decimal: 16
+    id: SNS-ffcb8c
+  - decimal: 18
+    id: CT01-560b08
+  - decimal: 18
+    id: SEGLD-90b353
+  - decimal: 8
+    id: HSEGLD-8f2360
+  - decimal: 18
+    id: LEGLD-3e7182
+  - decimal: 18
+    id: JWLASH-8bfcd2
+  - decimal: 18
+    id: WEGLD-d7c6bb
+  - decimal: 18
+    id: JWLEGLD-761a4f
+pool:
+  - address: erd1qqqqqqqqqqqqqpgq65a4d6rv2czrk3uvfcxan7543geyvdp82ges44d43y
+    type: ashswap-poolv2
+    tokens: 
+      - BUSD-632f7d
+      - WEGLD-d7c6bb
+  - address: erd1qqqqqqqqqqqqqpgq9flqlgtsek6k5ppcqh0hphzv9vv2dxn62geskve0ly
+    type: ashswap-poolv2
+    tokens: 
+      - USDT-188935
+      - ASH-4ce444
+  - address: erd1qqqqqqqqqqqqqpgqtrla4ke85vs57e3jlua9dkm0ycgn6n2c2gesa02uuc
+    type: ashswap-poolv2
+    tokens: 
+      - BUSD-632f7d
+      - UTK-a2a792
+  - address: erd1qqqqqqqqqqqqqpgqwqrrwk3npn4d26q5f0ltsang08q0fj8w2gesa4karx
+    type: ashswap-poolv2
+    tokens: 
+      - USDT-188935
+      - HTM-fe1f69

@@ -201,3 +201,68 @@ flowchart TD
     J -->|yes| J1(Increase token amount in vaults)
     J -->|no| J2(Add new token with amount into vaults)
 ```
+
+# How to aggregate your exchange's liquidity with AshSwap Aggregator
+## 1. Add your pool type
+- Add your pool type to `PoolTypeConfig` enum in `pool_config/configuration.ts`.
+  For example:
+    ```ts
+    export enum PoolTypeConfig {
+        XEXCHANGE = "xexchange",
+        ASHSWAP_V1 = "ashswap-poolv1",
+        ASHSWAP_V2 = "ashswap-poolv2",
+        YourPoolType = "YourPoolType",
+    }
+    ```
+## 2. Add your pool config
+- Add your pool info to `pool.mainnet.yaml` file in `pool_config/`.
+  For example:
+    ```yaml
+    token:
+        - ...
+        -   id: YourTokenId1
+            decimal: Token decimal
+            coingeckoId: Coingecko token id
+        -   id: YourTokenId2
+            decimal: Token decimal
+            coingeckoId: Coingecko token id
+    pool:
+        - ...
+        -   address: Your pool address
+            type: YourPoolType
+            tokens:
+            - YourTokenId1
+            - YourTokenId2
+    ```
+> :warning: If your token is not listed on Coingecko, leave it empty.
+
+> :warning: If your token has been defined in `token.mainnet.yaml`, you don't need to define it again.
+
+## 3. Add method to fetch your pool data
+1. Add your method to `ModelService` in `src/model/model.service.ts`.
+    ```ts
+    export class ModelService {
+        ...
+        async loadYourPoolConfig(): Promise<SubgraphPoolBase[]> {
+            ...
+        }
+    }
+    ```
+**Example**: XExchange case (using `x*y=k` AMM). They are using a graphql
+
+
+1. Add your method to scheduled job `getPoolDataAgent` in  `src/crons/pool.data.cron.ts`.
+    ```ts
+    const [xExchangePools, ashswapV1Pools, ashswapV2Pools, yourPools] = await Promise.all([
+          this.modelService.loadXExchangePoolConfig(),
+          this.modelService.loadAshswapV1PoolConfig(),
+          this.modelService.loadAshswapV2PoolConfig(),
+          this.modelService.loadYourPoolConfig(),
+        ]);
+        const result = [
+          ...xExchangePools,
+          ...ashswapV1Pools,
+          ...ashswapV2Pools,
+          ...yourPools,
+        ];
+    ```

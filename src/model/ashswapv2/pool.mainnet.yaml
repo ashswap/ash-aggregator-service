@@ -1,0 +1,24 @@
+token:
+  - id: WEGLD-bd4d79
+    decimal: 18
+    coingeckoId: wrapped-elrond
+  - id: ASH-a642d1
+    decimal: 18
+    coingeckoId: ashswap
+  - id: USDT-f8c08c
+    decimal: 6
+    coingeckoId: tether
+  - id: BUSD-40b57e
+    decimal: 18
+    coingeckoId: binance-usd
+pool:
+  - address: erd1qqqqqqqqqqqqqpgq5l05l0ts4lphdktx33apl0ss9rzf4r244fvsva6j53
+    type: ashswap-poolv2
+    tokens: 
+      - BUSD-40b57e
+      - WEGLD-bd4d79
+  - address: erd1qqqqqqqqqqqqqpgqn7969pvzaatp8p9yu6u5h2ce2gyw0x9j4fvsplvthl
+    type: ashswap-poolv2
+    tokens: 
+      - USDT-f8c08c
+      - ASH-a642d1
