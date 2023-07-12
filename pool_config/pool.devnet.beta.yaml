@@ -170,11 +170,6 @@ pool:
     tokens: 
       - WEGLD-d7c6bb
       - LEGLD-3e7182
-  - address: erd1qqqqqqqqqqqqqpgq7ltf5gt22mvg2qvdh0p9nkcxm3jqct5e2gesds2lnw
-    type: ashswap-poolv1
-    tokens: 
-      - ASH-4ce444
-      - JWLASH-8bfcd2
   - address: erd1qqqqqqqqqqqqqpgq65a4d6rv2czrk3uvfcxan7543geyvdp82ges44d43y
     type: ashswap-poolv2
     tokens: 
@@ -200,6 +195,11 @@ pool:
     tokens: 
       - ASH-4ce444
       - JWLASH-8bfcd2
+  - address: erd1qqqqqqqqqqqqqpgqxdktu7qkd2ers90vtd9k6xlyysvvmuwh2gessch83r
+    type: ashswap-poolv1
+    tokens: 
+      - WEGLD-d7c6bb
+      - JWLEGLD-761a4f
 token:
   - decimal: 18
     id: WEGLD-d7c6bb
@@ -259,3 +259,5 @@ token:
     id: LEGLD-3e7182
   - decimal: 18
     id: JWLASH-8bfcd2
+  - decimal: 18
+    id: WEGLD-d7c6bb
