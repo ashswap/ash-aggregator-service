@@ -1281,10 +1281,10 @@
   resolved "https://registry.npmjs.org/@sqltools/formatter/-/formatter-1.2.5.tgz"
   integrity sha512-Uy0+khmZqUrUGm5dmMqVlnvufZRSK0FbYzVgp0UMstm+F5+W2/jnEEQyc9vo1ZR/E5ZI/B1WjjoTqBqwJL6Krw==
 
-"@trancport/aggregator@0.2.3":
-  version "0.2.3"
-  resolved "https://gitlab.com/api/v4/projects/44133673/packages/npm/@trancport/aggregator/-/@trancport/aggregator-0.2.3.tgz"
-  integrity sha1-xNEFRg+4Qi6j7FpqPW7l5YwDn68=
+"@trancport/aggregator@0.3.0":
+  version "0.3.0"
+  resolved "https://gitlab.com/api/v4/projects/44133673/packages/npm/@trancport/aggregator/-/@trancport/aggregator-0.3.0.tgz"
+  integrity sha1-MggjVfl7Dd/+lTxKPOcqy16jyeE=
   dependencies:
     heap "^0.2.7"
     isomorphic-fetch "^2.2.1"

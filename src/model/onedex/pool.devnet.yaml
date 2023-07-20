@@ -1,0 +1,11 @@
+token:
+  - decimal: 18
+    id: BONE-f37cb7
+  - decimal: 6
+    id: USDC-8d4068
+pool:
+  - address: erd1qqqqqqqqqqqqqpgqf32jag0ffqhx7c8vm0z7n9k84pks6epckqys7d97nl
+    tokens:
+      - BONE-f37cb7
+      - USDC-8d4068
+    type: onedex
