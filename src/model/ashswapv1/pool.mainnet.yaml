@@ -8,6 +8,20 @@ token:
   - id: BUSD-40b57e
     decimal: 18
     coingeckoId: binance-usd
+  - id: SEGLD-3ad2d0
+    decimal: 18
+  - id: HSEGLD-c13a4e
+    decimal: 8
+  - id: JWLASH-f362b9
+    decimal: 18
+  - id: JWLEGLD-023462
+    decimal: 18
+  - id: WEGLD-bd4d79
+    decimal: 18
+    coingeckoId: wrapped-elrond
+  - id: ASH-a642d1
+    decimal: 18
+    coingeckoId: ashswap
 pool:
   - address: erd1qqqqqqqqqqqqqpgqs8p2v9wr8j48vqrmudcj94wu47kqra3r4fvshfyd9c
     type: ashswap-poolv1
@@ -20,3 +34,19 @@ pool:
     tokens: 
       - SEGLD-3ad2d0
       - WEGLD-bd4d79
+  - address: erd1qqqqqqqqqqqqqpgqhvj3vgwhzg26ghaseae6ehleq0r73xd24fvs358shm
+    type: ashswap-poolv1
+    tokens: 
+      - HSEGLD-c13a4e
+      - SEGLD-3ad2d0
+  - address: erd1qqqqqqqqqqqqqpgqlc8ng44k7q3s7l62cz248nkmhltm8cg64fvsfq2xht
+    type: ashswap-poolv1
+    tokens: 
+      - ASH-a642d1
+      - JWLASH-f362b9
+  - address: erd1qqqqqqqqqqqqqpgqa60cy30kdzzd8mygg20zhe4ppfhrp0tv4fvs9vd4hp
+    type: ashswap-poolv1
+    tokens: 
+      - WEGLD-bd4d79
+      - JWLEGLD-023462
+

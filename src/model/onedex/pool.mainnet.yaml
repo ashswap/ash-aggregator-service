@@ -13,6 +13,27 @@ token:
     coingeckoId: tether
   - id: LEGLD-d74da9
     decimal: 18
+  - id: ANT-dada1a
+    decimal: 18
+  - id: KRO-df97ec
+    decimal: 18
+    coingeckoId: krogan
+  - id: JEX-9040ca
+    decimal: 18
+  - id: XLH-8daa50
+    decimal: 18
+  - id: CTP-298075
+    decimal: 18
+  - id: REWARD-cf6eac
+    decimal: 8
+  - id: HODL-b8bd81
+    decimal: 8
+  - id: RARE-99e8b0
+    decimal: 18
+    coingeckoId: superrarebears-rare
+  - id: WBTC-5349b3
+    decimal: 8
+    coingeckoId: wrapped-bitcoin
 pool:
   - address: erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc
     type: onedex
@@ -22,7 +43,17 @@ pool:
   - address: erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc
     type: onedex
     tokens:
-      - USDC-c76f1f
+      - ANT-dada1a
+      - KRO-df97ec
+  - address: erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc
+    type: onedex
+    tokens:
+      - LEGLD-d74da9
+      - WEGLD-bd4d79
+  - address: erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc
+    type: onedex
+    tokens:
+      - JEX-9040ca
       - WEGLD-bd4d79
   - address: erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc
     type: onedex
@@ -32,5 +63,26 @@ pool:
   - address: erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc
     type: onedex
     tokens:
-      - LEGLD-d74da9
+      - XLH-8daa50
+      - ONE-f9954f
+  - address: erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc
+    type: onedex
+    tokens:
+      - CTP-298075
       - WEGLD-bd4d79
+  - address: erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc
+    type: onedex
+    tokens:
+      - REWARD-cf6eac
+      - HODL-b8bd81
+  - address: erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc
+    type: onedex
+    tokens:
+      - RARE-99e8b0
+      - LEGLD-d74da9
+  - address: erd1qqqqqqqqqqqqqpgqqz6vp9y50ep867vnr296mqf3dduh6guvmvlsu3sujc
+    type: onedex
+    tokens:
+      - ONE-f9954f
+      - WBTC-5349b3
+  
