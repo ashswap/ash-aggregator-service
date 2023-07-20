@@ -130,6 +130,8 @@ token:
     coingeckoId: age-of-zalmoxis-koson
   - id: SEGLD-3ad2d0
     decimal: 18
+  - id: HTM-f51d55
+    decimal: 18
 pool:
   - address: erd1qqqqqqqqqqqqqpgqa0fsfshnff4n76jhcye6k7uvd7qacsq42jpsp6shh2
     type: xexchange
@@ -371,3 +373,8 @@ pool:
     tokens:
       - KOSON-5dd4fa
       - USDC-c76f1f
+  - address: erd1qqqqqqqqqqqqqpgqxhgs55hpdqll93nnvf0nwnt3wmh62u692jps5wm8uj
+    type: xexchange
+    tokens:
+      - HTM-f51d55
+      - WEGLD-bd4d79
