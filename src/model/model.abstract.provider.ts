@@ -179,7 +179,7 @@ export abstract class ProtocolProvider {
                 }
                 // promise all the loading pool process
                 await Promise.all(Array.from(poolConfig.pools.values()).map(async (poolToLoad) => {
-                    try{
+                    try {
                         //fetch current latest timestamp of smartcontract from blockchain
                         const latestTimestamp = await this.mvxApiNetworkProvider.getLatestTimestampOfWallet(poolToLoad.address);
                         // if the pool is already in cache and the timestamp is the same, skip loading

@@ -3,6 +3,7 @@ import { XExchangeProvider } from "./xexchange/pool.provider";
 import { ProtocolProvider } from "./model.abstract.provider";
 import { AshswapV1Provider } from "./ashswapv1/pool.provider";
 import { AshswapV2Provider } from "./ashswapv2/pool.provider";
+import { JexchangeProvider } from "./jexchange/pool.provider";
 import { OneDexProvider } from "./onedex/pool.provider";
 
 export class TokenConfig {
@@ -32,11 +33,13 @@ export class ModelService {
         private readonly ashswapV1Provider: AshswapV1Provider,
         private readonly ashswapV2Provider: AshswapV2Provider,
         private readonly onedexProvider: OneDexProvider,
+        private readonly jexchangeProvider: JexchangeProvider,
     ) {
         this.providerMapper.set(xExchangeProvider.getProtocolName(), xExchangeProvider);
         this.providerMapper.set(ashswapV1Provider.getProtocolName(), ashswapV1Provider);
         this.providerMapper.set(ashswapV2Provider.getProtocolName(), ashswapV2Provider);
         this.providerMapper.set(onedexProvider.getProtocolName(), onedexProvider);
+        this.providerMapper.set(jexchangeProvider.getProtocolName(), jexchangeProvider);
 
         this.initConfig();
     }

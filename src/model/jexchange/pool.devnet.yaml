@@ -1,0 +1,11 @@
+token:
+  - decimal: 18
+    id: WEGLD-d7c6bb
+  - decimal: 18
+    id: XJEX-899465
+pool:
+  - address: erd1qqqqqqqqqqqqqpgq5eslt72e05ueujmzz96rwj8ken9zd9t8ftysfwnqye
+    tokens:
+      - XJEX-899465
+      - WEGLD-d7c6bb
+    type: jexchange
