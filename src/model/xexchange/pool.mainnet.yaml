@@ -132,6 +132,9 @@ token:
     decimal: 18
   - id: HTM-f51d55
     decimal: 18
+    coingeckoId: hatom
+  - id: MOOVE-875539
+    decimal: 18
 pool:
   - address: erd1qqqqqqqqqqqqqpgqa0fsfshnff4n76jhcye6k7uvd7qacsq42jpsp6shh2
     type: xexchange
@@ -378,3 +381,8 @@ pool:
     tokens:
       - HTM-f51d55
       - WEGLD-bd4d79
+  - address: erd1qqqqqqqqqqqqqpgqc08d6g76d2tg43hmn7p4p4csk86ed5ac2jpspyv865
+    type: xexchange
+    tokens:
+      - MOOVE-875539
+      - USDC-c76f1f
