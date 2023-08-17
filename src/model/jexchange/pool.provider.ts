@@ -44,7 +44,7 @@ export class JexchangeProvider extends ProtocolProvider {
           [[]],
         );
 
-        const totalFeePercent = (poolStatus.lp_fees as number) + (poolStatus.platform_fees as number);
+        const totalFeePercent = parseFloat(poolStatus.lp_fees) + parseFloat(poolStatus.platform_fees);
 
         if (poolStatus.paused != 0) {
             throw new PoolNotActiveError("Pair " + poolConfig.address + " not active");
