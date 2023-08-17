@@ -1,0 +1,36 @@
+token:
+  - id: WEGLD-bd4d79
+    decimal: 18
+    coingeckoId: wrapped-elrond
+  - id: USDT-f8c08c
+    decimal: 6
+    coingeckoId: tether
+  - id: JEX-9040ca
+    decimal: 18
+  - id: WBTC-5349b3
+    decimal: 8
+    coingeckoId: wrapped-bitcoin
+  - id: WETH-b4ca29
+    decimal: 18
+    coingeckoId: weth
+pool:
+  - address: erd1qqqqqqqqqqqqqpgqpa3pdmemt5l2ex80g7pksr2ettt955d66avsz76hyt
+    type: jexchange
+    tokens:
+      - WETH-b4ca29
+      - WBTC-5349b3
+  - address: erd1qqqqqqqqqqqqqpgqru6tkedsjjszrkkanctgq9m6rm2ple436avs0qj07m
+    type: jexchange
+    tokens:
+      - JEX-9040ca
+      - USDT-f8c08c
+  - address: erd1qqqqqqqqqqqqqpgquenuwz852khuxcau49md27wk2qp03v4s6avsdvmxkc
+    type: jexchange
+    tokens:
+      - JEX-9040ca
+      - WEGLD-bd4d79
+  - address: erd1qqqqqqqqqqqqqpgq5nmzpdkpr6c5q894f553n49t0uc67vc96avsxgjl3v
+    type: jexchange
+    tokens:
+      - JEX-9040ca
+      - WETH-b4ca29
