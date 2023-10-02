@@ -1,7 +1,7 @@
 import * as yaml from 'js-yaml';
 import * as fs from 'fs';
 import { join } from 'path';
-import { AbiRegistry, Address, ArgSerializer, Interaction, SmartContract, SmartContractAbi } from '@multiversx/sdk-core/out';
+import { AbiRegistry, Address, ArgSerializer, Interaction, SmartContract } from '@multiversx/sdk-core/out';
 import { SubgraphPoolBase } from '@trancport/aggregator';
 import { CachingService } from 'src/common/caching/caching.service';
 import { CacheInfo } from 'src/utils/cache.info';
@@ -25,7 +25,7 @@ export class PoolNotActiveError extends Error {
 export abstract class ProtocolProvider {
     private config: ProtocolConfig;
     private abiService: AbiService;
-    private smartContractAbi: SmartContractAbi;
+    private smartContractAbi: AbiRegistry;
     private cachedContract: Map<string, SmartContract> = new Map();
     private readonly mvxApiNetworkProvider: CustomApiNetworkProvider;
     constructor(
@@ -41,7 +41,7 @@ export abstract class ProtocolProvider {
         );
     }
 
-    async getAbi(): Promise<SmartContractAbi | undefined> {
+    async getAbi(): Promise<AbiRegistry | undefined> {
         if (this.smartContractAbi) {
             return this.smartContractAbi;
         }
@@ -52,17 +52,12 @@ export abstract class ProtocolProvider {
                 encoding: 'utf8',
             });
             const json = JSON.parse(jsonContent);
-            const abiRegistry = AbiRegistry.create(json);
-            this.smartContractAbi = new SmartContractAbi(abiRegistry);
+            this.smartContractAbi = AbiRegistry.create(json);
             return this.smartContractAbi;
         } catch (error) {
           // Handle the error if the import fails
             console.log(error);
         }
-    }
-
-    protected getSmartContractAbi(): SmartContractAbi {
-        return this.smartContractAbi;
     }
 
     abstract getProtocolName(): string;
