@@ -7,6 +7,7 @@ import { CachingModule } from 'src/common/caching/caching.module';
 import { AshswapV1Module } from './ashswapv1/pool.module';
 import { AshswapV2Module } from './ashswapv2/pool.module';
 import { JexchangeModule } from './jexchange/pool.module';
+import { JexchangeStableModule } from './jexchange_stable/pool.module';
 import { MvxCommunicationModule } from 'src/common/mvx-communication/mvx.communication.module';
 import { OneDexModule } from './onedex/pool.module';
 
@@ -19,6 +20,7 @@ import { OneDexModule } from './onedex/pool.module';
     AshswapV1Module,
     AshswapV2Module,
     JexchangeModule,
+    JexchangeStableModule,
     OneDexModule,
     MvxCommunicationModule,
   ],

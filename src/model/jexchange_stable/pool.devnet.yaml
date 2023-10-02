@@ -1,0 +1,13 @@
+token:
+  - id: USDC-8d4068
+    decimal: 6
+    coingeckoId: usd-coin
+  - id: USDT-188935
+    decimal: 6
+    coingeckoId: tether
+pool:
+  - address: erd1qqqqqqqqqqqqqpgquhkcrhtzupwkw0enxn3nus87czjd9t9e6avs0ex57m
+    type: jexchange-stable
+    tokens:
+      - USDC-8d4068
+      - USDT-188935
